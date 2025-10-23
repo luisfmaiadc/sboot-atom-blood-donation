@@ -1,3 +1,9 @@
 spring:
   application:
     name: sboot-atom-blood-donation
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbDoeAqui?createDatabaseIfNotExist=true
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:secret}
+    driver-class-name: com.mysql.cj.jdbc.Driver

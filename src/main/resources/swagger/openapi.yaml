@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: DoeAqui API
+  description: API atômica para o sistema de doação de sangue DoeAqui.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/v1
+
+paths:
+  /usuarios:
+    post:
+      summary: Insere um novo usuário
+      operationId: postNewUser
+      tags:
+        - Usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+      responses:
+        '201':
+          description: Usuário cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioResponse'
+        '400':
+          description: Usuário não encontrado
+        '500':
+          description: Erro no servidor
+
+components:
+  schemas:
+    UsuarioRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 150
+        dataNascimento:
+          type: string
+          format: date
+        cpf:
+          type: string
+          minLength: 11
+          maxLength: 11
+          pattern: '^[0-9]{11}$'
+        genero:
+          type: string
+          minLength: 1
+          maxLength: 1
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        telefone:
+          type: string
+          maxLength: 20
+        senha:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 100
+        idTipoSanguineo:
+          type: integer
+          format: int32
+        idPapel:
+          type: integer
+          format: int32
+
+
+    UsuarioResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+        dataNascimento:
+          type: string
+          format: date
+        cpf:
+          type: string
+        genero:
+          type: string
+        email:
+          type: string
+          format: email
+        telefone:
+          type: string
+        idTipoSanguineo:
+          type: integer
+          format: int32
+        idPapel:
+          type: integer
+          format: int32
+        ativo:
+          type: boolean

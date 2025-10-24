@@ -5,5 +5,5 @@ public enum Status {
     ABERTA,
     EM_ANDAMENTO,
     ENCERRADA,
-    CANCELADA;
+    CANCELADA
 }

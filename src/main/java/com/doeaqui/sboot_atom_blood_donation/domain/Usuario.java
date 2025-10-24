@@ -18,9 +18,8 @@ public class Usuario {
     private LocalDate dataNascimento;
     private String cpf;
     private Character genero;
-    private String email;
     private String telefone;
-    private Integer idTipoSanguineo;
-    private Integer idPapel;
+    private Byte idTipoSanguineo;
+    private Byte idPapel;
     private Boolean ativo;
 }

@@ -11,14 +11,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SolicitacaoDoacao {
+public class Login {
 
-    private Integer id;
     private Integer idUsuario;
-    private Integer idHemocentro;
-    private Byte idTipoSanguineo;
-    private LocalDateTime dataSolicitacao;
-    private Status status;
-    private LocalDateTime dataEncerramento;
-    private String observacoes;
+    private String email;
+    private String senha;
+    private LocalDateTime ultimoLogin;
+    private Byte tentativasFalhas;
 }

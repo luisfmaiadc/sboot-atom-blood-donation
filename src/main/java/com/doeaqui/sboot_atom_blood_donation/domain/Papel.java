@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Papel {
 
-    private Integer id;
+    private Byte id;
     private String nome;
 }

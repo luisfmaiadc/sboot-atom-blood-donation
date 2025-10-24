@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TipoSanguineo {
 
-    private Integer id;
+    private Byte id;
     private String tipo;
     private Character fator;
 }

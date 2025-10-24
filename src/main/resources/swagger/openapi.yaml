@@ -8,7 +8,7 @@ servers:
   - url: http://localhost:8080/v1
 
 paths:
-  /usuarios:
+  /usuario:
     post:
       summary: Insere um novo usuário
       operationId: postNewUser
@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UsuarioRequest'
+              $ref: '#/components/schemas/NewUsuarioRequest'
       responses:
         '201':
           description: Usuário cadastrado com sucesso
@@ -28,14 +28,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/UsuarioResponse'
         '400':
-          description: Usuário não encontrado
+          description: Requisição inválida
         '500':
           description: Erro no servidor
 
 components:
   schemas:
-    UsuarioRequest:
+    NewUsuarioRequest:
       type: object
+      required:
+        - nome
+        - dataNascimento
+        - cpf
+        - genero
+        - idTipoSanguineo
+        - idPapel
+        - login
       properties:
         nome:
           type: string
@@ -53,25 +61,33 @@ components:
           type: string
           minLength: 1
           maxLength: 1
-        email:
-          type: string
-          format: email
-          maxLength: 100
         telefone:
           type: string
           maxLength: 20
-        senha:
-          type: string
-          format: password
-          minLength: 8
-          maxLength: 100
         idTipoSanguineo:
           type: integer
           format: int32
         idPapel:
           type: integer
           format: int32
+        login:
+          $ref: '#/components/schemas/NewLoginRequest'
 
+    NewLoginRequest:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        senha:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 100
 
     UsuarioResponse:
       type: object

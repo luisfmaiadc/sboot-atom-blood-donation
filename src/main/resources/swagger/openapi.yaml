@@ -56,6 +56,26 @@ paths:
         '500':
           description: Erro no servidor
 
+  /tipoSanguineo:
+    get:
+      summary: Obter tipos sanguíneos
+      operationId: getTiposSanguineos
+      tags:
+        - Tipo Sanguíneo
+      responses:
+        '200':
+          description: Tipos sanguíneos obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoSanguineoResponse'
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro no servidor
+
 components:
   schemas:
     NewUsuarioRequest:
@@ -166,3 +186,13 @@ components:
         expirationTime:
           type: string
           format: date-time
+
+    TipoSanguineoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        tipo:
+          type: string
+        fator:
+          type: string

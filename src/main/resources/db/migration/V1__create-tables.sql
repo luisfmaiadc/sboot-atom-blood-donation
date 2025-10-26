@@ -34,7 +34,6 @@ CREATE TABLE TbLogin (
     idUsuario INT,
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    ultimoLogin DATETIME,
     tentativasFalhas TINYINT UNSIGNED,
     PRIMARY KEY (idUsuario),
     FOREIGN KEY (idUsuario) REFERENCES TbUsuario(id) ON DELETE CASCADE

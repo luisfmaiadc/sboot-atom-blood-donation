@@ -32,6 +32,30 @@ paths:
         '500':
           description: Erro no servidor
 
+  /login:
+    post:
+      summary: Obtém token JWT de autenticação
+      operationId: postLoginCredentials
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro no servidor
+
 components:
   schemas:
     NewUsuarioRequest:
@@ -117,3 +141,28 @@ components:
           format: int32
         ativo:
           type: boolean
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - senha
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        senha:
+          type: string
+
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - expirationTime
+      properties:
+        token:
+          type: string
+        expirationTime:
+          type: string
+          format: date-time

@@ -1,9 +1,6 @@
 package com.doeaqui.sboot_atom_blood_donation.config;
 
-import com.doeaqui.sboot_atom_blood_donation.repository.Impl.LoginRepositoryImpl;
-import com.doeaqui.sboot_atom_blood_donation.repository.Impl.PapelRepositoryImpl;
-import com.doeaqui.sboot_atom_blood_donation.repository.Impl.TipoSanguineoRepositoryImpl;
-import com.doeaqui.sboot_atom_blood_donation.repository.Impl.UsuarioRepositoryImpl;
+import com.doeaqui.sboot_atom_blood_donation.repository.Impl.*;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.springframework.cache.annotation.EnableCaching;
@@ -43,5 +40,10 @@ public class ApiConfig {
     @Bean
     public PapelRepositoryImpl papelRepository(Jdbi jdbi) {
         return jdbi.onDemand(PapelRepositoryImpl.class);
+    }
+
+    @Bean
+    public HemocentroRepositoryImpl hemocentroRepository(Jdbi jdbi) {
+        return jdbi.onDemand(HemocentroRepositoryImpl.class);
     }
 }

@@ -20,7 +20,7 @@ CREATE TABLE TbUsuario (
     dataNascimento DATE NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL,
     genero CHAR(1) NOT NULL,
-    telefone VARCHAR(20),
+    telefone VARCHAR(20) UNIQUE,
     idTipoSanguineo TINYINT UNSIGNED NOT NULL,
     idPapel TINYINT UNSIGNED NOT NULL,
     ativo TINYINT(1) NOT NULL,
@@ -43,8 +43,9 @@ CREATE TABLE TbLogin (
 CREATE TABLE TbHemocentro(
     id INT AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
-    telefone VARCHAR(20),
-    email VARCHAR(100),
+    telefone VARCHAR(20) UNIQUE,
+    email VARCHAR(100) UNIQUE,
+    ativo TINYINT(1) NOT NULL,
     PRIMARY KEY (id)
 );
 

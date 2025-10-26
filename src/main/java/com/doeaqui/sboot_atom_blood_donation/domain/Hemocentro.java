@@ -15,4 +15,5 @@ public class Hemocentro {
     private String nome;
     private String telefone;
     private String email;
+    private Boolean ativo;
 }

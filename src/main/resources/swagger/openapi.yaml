@@ -10,7 +10,7 @@ servers:
 paths:
   /usuario:
     post:
-      summary: Insere um novo usuário
+      summary: Inserir novo usuário
       operationId: postNewUser
       tags:
         - Usuario
@@ -29,12 +29,20 @@ paths:
                 $ref: '#/components/schemas/UsuarioResponse'
         '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
         '500':
           description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
 
   /login:
     post:
-      summary: Obtém token JWT de autenticação
+      summary: Obter token JWT de autenticação
       operationId: postLoginCredentials
       tags:
         - Login
@@ -53,8 +61,16 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
         '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
         '500':
           description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
 
   /tipoSanguineo:
     get:
@@ -73,8 +89,16 @@ paths:
                   $ref: '#/components/schemas/TipoSanguineoResponse'
         '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
         '500':
           description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
 
   /papel:
     get:
@@ -93,8 +117,48 @@ paths:
                   $ref: '#/components/schemas/PapelResponse'
         '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
         '500':
           description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
+  /hemocentro:
+    post:
+      summary: Cadastrar novo hemocentro
+      operationId: postNewHemocentro
+      tags:
+        - Hemocentro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewHemocentroRequest'
+      responses:
+        '201':
+          description: Hemocentro cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/HemocentroResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
 
 components:
   schemas:
@@ -224,3 +288,57 @@ components:
           type: string
         nome:
           type: string
+
+    NewHemocentroRequest:
+      type: object
+      required:
+        - nome
+        - telefone
+        - email
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 150
+        telefone:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          maxLength: 100
+
+    HemocentroResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 150
+        telefone:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        ativo:
+          type: boolean
+
+    StandardError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+      required:
+        - timestamp
+        - status
+        - error

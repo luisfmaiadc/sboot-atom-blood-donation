@@ -76,6 +76,26 @@ paths:
         '500':
           description: Erro no servidor
 
+  /papel:
+    get:
+      summary: Obter papéis de usuários
+      operationId: getPapeisUsuarios
+      tags:
+        - Papel de Usuário
+      responses:
+        '200':
+          description: Papéis de usuários obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PapelResponse'
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro no servidor
+
 components:
   schemas:
     NewUsuarioRequest:
@@ -195,4 +215,12 @@ components:
         tipo:
           type: string
         fator:
+          type: string
+
+    PapelResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
           type: string

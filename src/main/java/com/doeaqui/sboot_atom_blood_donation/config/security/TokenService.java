@@ -38,17 +38,13 @@ public class TokenService {
         }
     }
 
-    public String getSubject(String token) {
-        try {
+    public String getSubject(String token) throws JWTVerificationException{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer(ISSUER)
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException exception){
-            throw new RuntimeException("Token JWT inválido ou expirado.");
-        }
     }
 
     private Instant expirationDate() {

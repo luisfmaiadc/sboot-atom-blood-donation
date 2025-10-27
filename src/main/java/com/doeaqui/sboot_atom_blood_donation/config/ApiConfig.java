@@ -46,4 +46,9 @@ public class ApiConfig {
     public HemocentroRepositoryImpl hemocentroRepository(Jdbi jdbi) {
         return jdbi.onDemand(HemocentroRepositoryImpl.class);
     }
+
+    @Bean
+    public SolicitacaoDoacaoRepositoryImpl solicitacaoDoacaoRepository(Jdbi jdbi) {
+        return jdbi.onDemand(SolicitacaoDoacaoRepositoryImpl.class);
+    }
 }

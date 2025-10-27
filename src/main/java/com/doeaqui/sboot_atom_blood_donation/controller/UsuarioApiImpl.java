@@ -27,4 +27,10 @@ public class UsuarioApiImpl implements UsuarioApiDelegate {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
+
+    @Override
+    public ResponseEntity<UsuarioResponse> getUserInfoById(Integer idUsuario) {
+        UsuarioResponse response = service.getUserInfoById(idUsuario);
+        return ResponseEntity.ok(response);
+    }
 }

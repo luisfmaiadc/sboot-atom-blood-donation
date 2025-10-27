@@ -1,9 +1,7 @@
 package com.doeaqui.sboot_atom_blood_donation.repository.Impl;
 
-import com.doeaqui.sboot_atom_blood_donation.domain.Usuario;
-import com.doeaqui.sboot_atom_blood_donation.model.UsuarioResponse;
-import com.doeaqui.sboot_atom_blood_donation.repository.UsuarioRepository;
-import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
+import com.doeaqui.sboot_atom_blood_donation.domain.SolicitacaoDoacao;
+import com.doeaqui.sboot_atom_blood_donation.repository.SolicitacaoRepository;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
@@ -12,19 +10,16 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 @UseClasspathSqlLocator
-public interface UsuarioRepositoryImpl extends UsuarioRepository {
+public interface SolicitacaoDoacaoRepositoryImpl extends SolicitacaoRepository {
 
     @Override
     @SqlUpdate
     @GetGeneratedKeys
-    int postNewUser(@BindBean Usuario usuario);
+    int postNewSolicitacaoDoacao(@BindBean SolicitacaoDoacao solicitacaoDoacao);
 
     @Override
     @SqlQuery
-    @RegisterBeanMapper(UsuarioResponse.class)
-    Optional<UsuarioResponse> getUserInfoById(@Bind("id") Integer id);
+    boolean isSolicitacaoDoacaoValid(@Bind("idUsuario") Integer idUsuario);
 }

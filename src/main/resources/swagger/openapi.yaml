@@ -198,6 +198,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    get:
+      summary: Obter informações de hemocentro por filtros
+      operationId: getHemocentroByFilter
+      tags:
+        - Hemocentro
+      parameters:
+        - in: query
+          name: nome
+          schema:
+            type: string
+            maxLength: 150
+          required: false
+        - in: query
+          name: telefone
+          schema:
+            type: string
+            maxLength: 20
+          required: false
+        - in: query
+          name: email
+          schema:
+            type: string
+            format: email
+            maxLength: 100
+          required: false
+      responses:
+        '200':
+          description: Hemocentro encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HemocentroResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /hemocentro/{idHemocentro}:
     get:
       summary: Obter informações de um hemocentro por ID
@@ -269,7 +316,7 @@ paths:
                 $ref: '#/components/schemas/StandardError'
 
     get:
-      summary: Obter informações de uma solicitação de doação por filtros
+      summary: Obter informações de solicitação de doação por filtros
       operationId: getSolicitacaoDoacaoByFilter
       tags:
         - Solicitação de Doação
@@ -299,11 +346,13 @@ paths:
           name: status
           schema:
             type: string
+            maxLength: 20
           required: false
         - in: query
           name: dataEncerramento
           schema:
             type: string
+            format: date
           required: false
       responses:
         '200':

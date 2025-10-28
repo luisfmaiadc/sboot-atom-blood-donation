@@ -11,6 +11,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,4 +27,9 @@ public interface HemocentroRepositoryImpl extends HemocentroRepository {
     @SqlQuery
     @RegisterBeanMapper(Hemocentro.class)
     Optional<Hemocentro> getHemocentroInfoById(@Bind("idHemocentro") Integer idHemocentro);
+
+    @Override
+    @SqlQuery
+    @RegisterBeanMapper(Hemocentro.class)
+    List<Hemocentro> getHemocentroByFilter(@Bind("nome") String nome, @Bind("telefone") String telefone, @Bind("email") String email);
 }

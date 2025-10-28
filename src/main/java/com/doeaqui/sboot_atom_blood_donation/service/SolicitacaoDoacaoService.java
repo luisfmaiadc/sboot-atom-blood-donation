@@ -9,5 +9,5 @@ import java.util.List;
 public interface SolicitacaoDoacaoService {
 
     SolicitacaoDoacao postNewSolicitacaoDoacao(NewSolicitacaoDoacaoRequest request);
-    List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, String dataEncerramento);
+    List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, LocalDate dataEncerramento);
 }

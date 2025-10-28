@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +34,12 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
         Hemocentro hemocentro = service.getHemocentroInfoById(idHemocentro);
         HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<List<HemocentroResponse>> getHemocentroByFilter(String nome, String telefone, String email) {
+        List<Hemocentro> hemocentroList = service.getHemocentroByFilter(nome, telefone, email);
+        List<HemocentroResponse> responseList = mapper.toHemocentroResponseList(hemocentroList);
+        return ResponseEntity.ok(responseList);
     }
 }

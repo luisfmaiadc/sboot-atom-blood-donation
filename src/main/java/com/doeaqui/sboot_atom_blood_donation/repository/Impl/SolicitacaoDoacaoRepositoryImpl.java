@@ -31,5 +31,5 @@ public interface SolicitacaoDoacaoRepositoryImpl extends SolicitacaoRepository {
     @SqlQuery
     @RegisterBeanMapper(SolicitacaoDoacao.class)
     List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(@Bind("idUsuario")Integer idUsuario, @Bind("idHemocentro") Integer idHemocentro, @Bind("idTipoSanguineo") Integer idTipoSanguineo,
-                                                         @Bind("dataSolicitacao") LocalDate dataSolicitacao, @Bind("status") String status, @Bind("dataEncerramento") String dataEncerramento);
+                                                         @Bind("dataSolicitacao") LocalDate dataSolicitacao, @Bind("status") String status, @Bind("dataEncerramento") LocalDate dataEncerramento);
 }

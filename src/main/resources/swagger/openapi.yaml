@@ -198,6 +198,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+  /hemocentro/{idHemocentro}:
+    get:
+      summary: Obter informações de um hemocentro por ID
+      operationId: getHemocentroInfoById
+      tags:
+        - Hemocentro
+      parameters:
+        - name: idHemocentro
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Informações do hemocentro obtidas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HemocentroResponse'
+        '400':
+          description: Hemocentro não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /solicitacaoDoacao:
     post:
       summary: Cadastrar nova solicitação de doação

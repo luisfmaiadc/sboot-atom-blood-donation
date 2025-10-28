@@ -27,4 +27,11 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
+
+    @Override
+    public ResponseEntity<HemocentroResponse> getHemocentroInfoById(Integer idHemocentro) {
+        Hemocentro hemocentro = service.getHemocentroInfoById(idHemocentro);
+        HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
+        return ResponseEntity.ok(response);
+    }
 }

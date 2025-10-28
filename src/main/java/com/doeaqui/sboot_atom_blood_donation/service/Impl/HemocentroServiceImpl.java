@@ -1,5 +1,6 @@
 package com.doeaqui.sboot_atom_blood_donation.service.Impl;
 
+import com.doeaqui.sboot_atom_blood_donation.config.exception.ResourceNotFoundException;
 import com.doeaqui.sboot_atom_blood_donation.domain.Hemocentro;
 import com.doeaqui.sboot_atom_blood_donation.mapper.HemocentroMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.NewHemocentroRequest;
@@ -8,6 +9,8 @@ import com.doeaqui.sboot_atom_blood_donation.service.HemocentroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +27,12 @@ public class HemocentroServiceImpl implements HemocentroService {
         int idNewHemocentro = repository.postNewHemocentro(newHemocentro);
         newHemocentro.setId(idNewHemocentro);
         return newHemocentro;
+    }
+
+    @Override
+    public Hemocentro getHemocentroInfoById(Integer idHemocentro) {
+        Optional<Hemocentro> optionalHemocentro = repository.getHemocentroInfoById(idHemocentro);
+        if (optionalHemocentro.isEmpty()) throw new ResourceNotFoundException("Hemocentro não encontrado.");
+        return optionalHemocentro.get();
     }
 }

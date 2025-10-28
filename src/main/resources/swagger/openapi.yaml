@@ -376,6 +376,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+  /solicitacaoDoacao/{idSolicitacaoDoacao}:
+    get:
+      summary: Obter informações de um solicitação de doação por ID
+      operationId: getSolicitacaoDoacaoInfoById
+      tags:
+        - Solicitação de Doação
+      parameters:
+        - name: idSolicitacaoDoacao
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Informações de uma solicitação de doação obtidas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitacaoDoacaoResponse'
+        '400':
+          description: Solicitação de doação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
 components:
   schemas:
     NewUsuarioRequest:

@@ -10,4 +10,5 @@ public interface SolicitacaoDoacaoService {
 
     SolicitacaoDoacao postNewSolicitacaoDoacao(NewSolicitacaoDoacaoRequest request);
     List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, LocalDate dataEncerramento);
+    SolicitacaoDoacao getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao);
 }

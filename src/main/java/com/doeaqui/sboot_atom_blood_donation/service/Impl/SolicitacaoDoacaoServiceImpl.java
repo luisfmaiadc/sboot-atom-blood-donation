@@ -1,5 +1,6 @@
 package com.doeaqui.sboot_atom_blood_donation.service.Impl;
 
+import com.doeaqui.sboot_atom_blood_donation.config.exception.ResourceNotFoundException;
 import com.doeaqui.sboot_atom_blood_donation.domain.SolicitacaoDoacao;
 import com.doeaqui.sboot_atom_blood_donation.domain.Status;
 import com.doeaqui.sboot_atom_blood_donation.mapper.SolicitacaoDoacaoMapper;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,13 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
     public List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, LocalDate dataEncerramento) {
         AppUtils.requireAtLeastOneNonNull(Arrays.asList(idUsuario, idHemocentro, idTipoSanguineo, dataSolicitacao, status, dataEncerramento));
         return repository.getSolicitacaoDoacaoByFilter(idUsuario, idHemocentro, idTipoSanguineo, dataSolicitacao, status, dataEncerramento);
+    }
+
+    @Override
+    public SolicitacaoDoacao getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao) {
+        Optional<SolicitacaoDoacao> optionalSolicitacaoDoacao = repository.getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
+        if (optionalSolicitacaoDoacao.isEmpty()) throw new ResourceNotFoundException("Solicitação de doação não encontrada.");
+        return optionalSolicitacaoDoacao.get();
     }
 
     private void isTipoSanguineoValid(UsuarioResponse usuario, Integer idTipoSanguineo) {

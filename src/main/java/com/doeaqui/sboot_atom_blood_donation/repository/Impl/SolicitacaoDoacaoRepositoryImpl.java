@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @UseClasspathSqlLocator
@@ -32,4 +33,9 @@ public interface SolicitacaoDoacaoRepositoryImpl extends SolicitacaoRepository {
     @RegisterBeanMapper(SolicitacaoDoacao.class)
     List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(@Bind("idUsuario")Integer idUsuario, @Bind("idHemocentro") Integer idHemocentro, @Bind("idTipoSanguineo") Integer idTipoSanguineo,
                                                          @Bind("dataSolicitacao") LocalDate dataSolicitacao, @Bind("status") String status, @Bind("dataEncerramento") LocalDate dataEncerramento);
+
+    @Override
+    @SqlQuery
+    @RegisterBeanMapper(SolicitacaoDoacao.class)
+    Optional<SolicitacaoDoacao> getSolicitacaoDoacaoInfoById(@Bind("idSolicitacaoDoacao") Integer idSolicitacaoDoacao);
 }

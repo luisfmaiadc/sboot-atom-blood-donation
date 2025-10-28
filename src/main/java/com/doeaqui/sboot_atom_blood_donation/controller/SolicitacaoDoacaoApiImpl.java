@@ -36,4 +36,11 @@ public class SolicitacaoDoacaoApiImpl implements SolicitacaoDoacaoApiDelegate {
         List<SolicitacaoDoacaoResponse> responseList = mapper.toSolicitacaoDoacaoResponseList(solicitacaoDoacaoList);
         return ResponseEntity.ok(responseList);
     }
+
+    @Override
+    public ResponseEntity<SolicitacaoDoacaoResponse> getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao) {
+        SolicitacaoDoacao solicitacaoDoacao = service.getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
+        SolicitacaoDoacaoResponse response = mapper.toSolicitacaoDoacaoResponse(solicitacaoDoacao);
+        return ResponseEntity.ok(response);
+    }
 }

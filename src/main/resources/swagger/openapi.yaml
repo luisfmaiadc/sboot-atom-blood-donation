@@ -230,6 +230,65 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    get:
+      summary: Obter informações de uma solicitação de doação por filtros
+      operationId: getSolicitacaoDoacaoByFilter
+      tags:
+        - Solicitação de Doação
+      parameters:
+        - in: query
+          name: idUsuario
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: idHemocentro
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: idTipoSanguineo
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: dataSolicitacao
+          schema:
+            type: string
+            format: date
+          required: false
+        - in: query
+          name: status
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: dataEncerramento
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Solicitação de doação encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolicitacaoDoacaoResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
 components:
   schemas:
     NewUsuarioRequest:

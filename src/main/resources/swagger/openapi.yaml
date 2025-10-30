@@ -78,6 +78,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    patch:
+      summary: Atualizar dados do usuário
+      operationId: patchUserInfo
+      tags:
+        - Usuario
+      parameters:
+        - name: idUsuario
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsuarioRequest'
+      responses:
+        '201':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /login:
     post:
       summary: Obter token JWT de autenticação
@@ -96,8 +133,46 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
+  /login/{idUsuario}:
+    get:
+      summary: Obter informações de um login por ID do usuário
+      operationId: getLoginInfoById
+      tags:
+        - Login
+      parameters:
+        - name: idUsuario
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Informações de um login obtidas com sucesso
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/LoginResponse'
         '400':
+          description: Login não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
           description: Requisição inválida
           content:
             application/json:
@@ -513,7 +588,7 @@ components:
         senha:
           type: string
 
-    LoginResponse:
+    AuthenticationResponse:
       type: object
       required:
         - token
@@ -524,6 +599,15 @@ components:
         expirationTime:
           type: string
           format: date-time
+
+    LoginResponse:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+        email:
+          type: string
+          format: email
 
     TipoSanguineoResponse:
       type: object
@@ -625,6 +709,29 @@ components:
           type: string
         observacoes:
           type: string
+
+    UpdateUsuarioRequest:
+      type: object
+      properties:
+        genero:
+          type: string
+          minLength: 1
+          maxLength: 1
+        telefone:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+        senha:
+          type: string
+          minLength: 8
+          maxLength: 100
+        idPapel:
+          type: integer
+          format: int32
 
     StandardError:
       type: object

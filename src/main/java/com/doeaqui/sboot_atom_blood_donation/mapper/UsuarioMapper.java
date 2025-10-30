@@ -10,4 +10,5 @@ public interface UsuarioMapper {
 
     Usuario toUsuario (NewUsuarioRequest usuarioRequest);
     UsuarioResponse toUsuarioResponse(Usuario usuario);
+    Usuario toUsuarioFromResponse(UsuarioResponse response);
 }

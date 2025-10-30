@@ -3,8 +3,11 @@ package com.doeaqui.sboot_atom_blood_donation.controller;
 import com.doeaqui.sboot_atom_blood_donation.api.LoginApiDelegate;
 import com.doeaqui.sboot_atom_blood_donation.config.security.TokenService;
 import com.doeaqui.sboot_atom_blood_donation.domain.Login;
+import com.doeaqui.sboot_atom_blood_donation.mapper.LoginMapper;
+import com.doeaqui.sboot_atom_blood_donation.model.AuthenticationResponse;
 import com.doeaqui.sboot_atom_blood_donation.model.LoginRequest;
 import com.doeaqui.sboot_atom_blood_donation.model.LoginResponse;
+import com.doeaqui.sboot_atom_blood_donation.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +20,21 @@ public class LoginApiImpl implements LoginApiDelegate {
 
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
+    private final LoginService loginService;
+    private final LoginMapper mapper;
 
     @Override
-    public ResponseEntity<LoginResponse> postLoginCredentials(LoginRequest loginRequest) {
+    public ResponseEntity<AuthenticationResponse> postLoginCredentials(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha());
         var authentication = authenticationManager.authenticate(authenticationToken);
-        LoginResponse response = tokenService.getToken((Login) authentication.getPrincipal());
+        AuthenticationResponse response = tokenService.getToken((Login) authentication.getPrincipal());
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<LoginResponse> getLoginInfoById(Integer idUsuario) {
+        Login login = loginService.getLoginInfoById(idUsuario);
+        LoginResponse response = mapper.toLoginResponse(login);
         return ResponseEntity.ok(response);
     }
 }

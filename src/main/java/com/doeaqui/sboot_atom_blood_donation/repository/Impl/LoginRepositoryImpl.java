@@ -10,6 +10,8 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @UseClasspathSqlLocator
 public interface LoginRepositoryImpl extends LoginRepository {
@@ -22,4 +24,17 @@ public interface LoginRepositoryImpl extends LoginRepository {
     @SqlQuery
     @RegisterBeanMapper(Login.class)
     Login findByEmail(@Bind("email") String email);
+
+    @Override
+    @SqlQuery
+    @RegisterBeanMapper(Login.class)
+    Optional<Login> getLoginInfoById(@Bind("idUsuario") Integer idUsuario);
+
+    @Override
+    @SqlUpdate
+    void patchLoginEmail(@BindBean Login login);
+
+    @Override
+    @SqlUpdate
+    void patchLoginSenha(@BindBean Login login);
 }

@@ -27,4 +27,8 @@ public interface UsuarioRepositoryImpl extends UsuarioRepository {
     @SqlQuery
     @RegisterBeanMapper(UsuarioResponse.class)
     Optional<UsuarioResponse> getUserInfoById(@Bind("id") Integer id);
+
+    @Override
+    @SqlUpdate
+    void patchUserInfo(@BindBean Usuario usuario);
 }

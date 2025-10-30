@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.doeaqui.sboot_atom_blood_donation.domain.Login;
+import com.doeaqui.sboot_atom_blood_donation.model.AuthenticationResponse;
 import com.doeaqui.sboot_atom_blood_donation.model.LoginResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class TokenService {
 
     private static final String ISSUER = "API DoeAqui";
 
-    public LoginResponse getToken(Login login) {
+    public AuthenticationResponse getToken(Login login) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             Instant expirationInstant = expirationDate();
@@ -32,7 +33,7 @@ public class TokenService {
                     .withSubject(login.getEmail())
                     .withExpiresAt(expirationInstant)
                     .sign(algorithm);
-            return new LoginResponse(tokenJWT, expirationOffsetDateTime);
+            return new AuthenticationResponse(tokenJWT, expirationOffsetDateTime);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token JWT: ", exception);
         }

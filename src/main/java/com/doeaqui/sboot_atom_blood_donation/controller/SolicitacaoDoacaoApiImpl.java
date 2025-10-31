@@ -5,6 +5,7 @@ import com.doeaqui.sboot_atom_blood_donation.domain.SolicitacaoDoacao;
 import com.doeaqui.sboot_atom_blood_donation.mapper.SolicitacaoDoacaoMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.NewSolicitacaoDoacaoRequest;
 import com.doeaqui.sboot_atom_blood_donation.model.SolicitacaoDoacaoResponse;
+import com.doeaqui.sboot_atom_blood_donation.model.UpdateSolicitacaoDoacaoRequest;
 import com.doeaqui.sboot_atom_blood_donation.service.SolicitacaoDoacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,13 @@ public class SolicitacaoDoacaoApiImpl implements SolicitacaoDoacaoApiDelegate {
     @Override
     public ResponseEntity<SolicitacaoDoacaoResponse> getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao) {
         SolicitacaoDoacao solicitacaoDoacao = service.getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
+        SolicitacaoDoacaoResponse response = mapper.toSolicitacaoDoacaoResponse(solicitacaoDoacao);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<SolicitacaoDoacaoResponse> patchSolicitacaoDoacaoInfo(Integer idSolicitacaoDoacao, UpdateSolicitacaoDoacaoRequest updateSolicitacaoRequest) {
+        SolicitacaoDoacao solicitacaoDoacao = service.patchSolicitacaoDoacaoInfo(idSolicitacaoDoacao, updateSolicitacaoRequest);
         SolicitacaoDoacaoResponse response = mapper.toSolicitacaoDoacaoResponse(solicitacaoDoacao);
         return ResponseEntity.ok(response);
     }

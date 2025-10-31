@@ -6,7 +6,6 @@ import com.doeaqui.sboot_atom_blood_donation.mapper.UsuarioMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.NewUsuarioRequest;
 import com.doeaqui.sboot_atom_blood_donation.model.UpdateUsuarioRequest;
 import com.doeaqui.sboot_atom_blood_donation.model.UsuarioResponse;
-import com.doeaqui.sboot_atom_blood_donation.service.LoginService;
 import com.doeaqui.sboot_atom_blood_donation.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ public class UsuarioApiImpl implements UsuarioApiDelegate {
 
     private final UsuarioService usuarioService;
     private final UsuarioMapper mapper;
-    private final LoginService loginService;
 
     @Override
     public ResponseEntity<UsuarioResponse> postNewUser(NewUsuarioRequest usuarioRequest) {

@@ -12,4 +12,5 @@ public interface SolicitacaoRepository {
     boolean isSolicitacaoDoacaoValid(Integer idUsuario);
     List<SolicitacaoDoacao> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, LocalDate dataEncerramento);
     Optional<SolicitacaoDoacao> getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao);
+    void patchSolicitacaoDoacaoInfo(SolicitacaoDoacao solicitacaoDoacao);
 }

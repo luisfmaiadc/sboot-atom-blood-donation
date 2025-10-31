@@ -96,7 +96,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateUsuarioRequest'
       responses:
-        '201':
+        '200':
           description: Usuário atualizado com sucesso
           content:
             application/json:
@@ -104,6 +104,12 @@ paths:
                 $ref: '#/components/schemas/UsuarioResponse'
         '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Usuário não encontrado
           content:
             application/json:
               schema:
@@ -140,6 +146,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardError'
+        '401':
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
         '500':
           description: Erro no servidor
           content:
@@ -167,13 +179,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
         '400':
-          description: Login não encontrado
+          description: Requisição inválida
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardError'
         '404':
-          description: Requisição inválida
+          description: Login não encontrado
           content:
             application/json:
               schema:
@@ -340,13 +352,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/HemocentroResponse'
         '400':
-          description: Hemocentro não encontrado
+          description: Requisição inválida
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardError'
         '404':
-          description: Requisição inválida
+          description: Hemocentro não encontrado
           content:
             application/json:
               schema:
@@ -471,13 +483,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/SolicitacaoDoacaoResponse'
         '400':
-          description: Solicitação de doação não encontrada
+          description: Requisição inválida
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StandardError'
         '404':
+          description: Solicitação de doação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
+    patch:
+      summary: Atualizar dados de uma solicitação de doação
+      operationId: patchSolicitacaoDoacaoInfo
+      tags:
+        - Solicitação de Doação
+      parameters:
+        - name: idSolicitacaoDoacao
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSolicitacaoDoacaoRequest'
+      responses:
+        '200':
+          description: Solicitação de doação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitacaoDoacaoResponse'
+        '400':
           description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Solicitação de doação não encontrada
           content:
             application/json:
               schema:
@@ -707,6 +762,9 @@ components:
           format: date-time
         status:
           type: string
+        dataEncerramento:
+          type: string
+          format: date-time
         observacoes:
           type: string
 
@@ -733,8 +791,22 @@ components:
           type: integer
           format: int32
 
+    UpdateSolicitacaoDoacaoRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          minLength: 1
+          maxLength: 20
+        observacoes:
+          type: string
+
     StandardError:
       type: object
+      required:
+        - timestamp
+        - status
+        - error
       properties:
         timestamp:
           type: string
@@ -743,7 +815,3 @@ components:
           type: integer
         error:
           type: string
-      required:
-        - timestamp
-        - status
-        - error

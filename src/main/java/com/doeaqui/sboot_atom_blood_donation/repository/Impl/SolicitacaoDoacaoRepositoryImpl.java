@@ -38,4 +38,8 @@ public interface SolicitacaoDoacaoRepositoryImpl extends SolicitacaoRepository {
     @SqlQuery
     @RegisterBeanMapper(SolicitacaoDoacao.class)
     Optional<SolicitacaoDoacao> getSolicitacaoDoacaoInfoById(@Bind("idSolicitacaoDoacao") Integer idSolicitacaoDoacao);
+
+    @Override
+    @SqlUpdate
+    void patchSolicitacaoDoacaoInfo(@BindBean SolicitacaoDoacao solicitacaoDoacao);
 }

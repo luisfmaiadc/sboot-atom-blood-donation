@@ -1,7 +1,6 @@
 package com.doeaqui.sboot_atom_blood_donation.service.Impl;
 
 import com.doeaqui.sboot_atom_blood_donation.config.exception.ResourceNotFoundException;
-import com.doeaqui.sboot_atom_blood_donation.domain.Login;
 import com.doeaqui.sboot_atom_blood_donation.domain.Usuario;
 import com.doeaqui.sboot_atom_blood_donation.mapper.UsuarioMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.NewUsuarioRequest;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -78,18 +77,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         boolean hasChanges = false;
         final Set<String> supportedGendersSet = Set.of("M", "F", "O");
 
-        if (request.getGenero() != null && !usuarioToUpdate.getGenero().equals(request.getGenero().charAt(0))) {
+        if (request.getGenero() != null && !Objects.equals(usuarioToUpdate.getGenero(), request.getGenero().charAt(0))) {
             if (!supportedGendersSet.contains(request.getGenero())) throw new IllegalArgumentException("Gênero informado não suportado.");
             usuarioToUpdate.setGenero(request.getGenero().charAt(0));
             hasChanges = true;
         }
 
-        if (request.getTelefone() != null && !request.getTelefone().equals(usuarioToUpdate.getTelefone())) {
+        if (request.getTelefone() != null && !Objects.equals(usuarioToUpdate.getTelefone(), request.getTelefone())) {
             usuarioToUpdate.setTelefone(request.getTelefone());
             hasChanges = true;
         }
 
-        if (request.getIdPapel() != null && !usuarioToUpdate.getIdPapel().equals(request.getIdPapel().byteValue())) {
+        if (request.getIdPapel() != null && !Objects.equals(usuarioToUpdate.getIdPapel(), request.getIdPapel().byteValue())) {
             var papelList = papelService.getPapeisUsuarios();
             if (papelList.stream().noneMatch(papel -> papel.getId().equals(request.getIdPapel().byteValue()))) {
                 throw new IllegalArgumentException("Papel informado inválido.");
@@ -104,7 +103,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private boolean isUpdateLoginValid(UpdateUsuarioRequest updateRequest, UsuarioResponse usuario) {
         boolean isUpdateLoginValid = false;
 
-        if (updateRequest.getEmail() != null && !usuario.getEmail().equals(updateRequest.getEmail())) {
+        if (updateRequest.getEmail() != null && !Objects.equals(updateRequest.getEmail(), usuario.getEmail())) {
             isUpdateLoginValid = true;
         }
 

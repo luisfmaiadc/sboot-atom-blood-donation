@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -54,50 +56,49 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         UsuarioResponse usuario = getUserInfoById(idUsuario);
         Usuario userInfo = usuarioMapper.toUsuarioFromResponse(usuario);
-        boolean isUpdateUserValid = isUpdateUserValid(updateRequest, usuario, userInfo);
-        boolean isUpdateLoginValid = isUpdateLoginValid(updateRequest, usuario);
 
-        if (!isUpdateUserValid && !isUpdateLoginValid) throw new IllegalArgumentException("Informe ao menos um campo para atualizar.");
+        boolean userFieldsChanged = applyUserUpdates(updateRequest, userInfo);
+        boolean loginFieldsChanged = isUpdateLoginValid(updateRequest, usuario);
 
-        if (isUpdateUserValid) {
+        if (!userFieldsChanged && !loginFieldsChanged)
+            throw new IllegalArgumentException("Informe ao menos um campo para atualizar ou os valores informados são os mesmos dos atuais.");
+
+        if (userFieldsChanged) {
             usuarioRepository.patchUserInfo(userInfo);
         }
 
-        if (isUpdateLoginValid) {
-            Login updatedLogin = loginService.patchLoginInfo(idUsuario, updateRequest);
-            usuario.setEmail(updatedLogin.getEmail());
+        if (loginFieldsChanged) {
+            loginService.patchLoginInfo(idUsuario, updateRequest);
         }
 
-        return usuario;
+        return getUserInfoById(idUsuario);
     }
 
-    private boolean isUpdateUserValid(UpdateUsuarioRequest updateRequest, UsuarioResponse usuario, Usuario userInfo) {
-        boolean isUpdateValid = false;
+    private boolean applyUserUpdates(UpdateUsuarioRequest request, Usuario usuarioToUpdate) {
+        boolean hasChanges = false;
+        final Set<String> supportedGendersSet = Set.of("M", "F", "O");
 
-        if (updateRequest.getGenero() != null && !usuario.getGenero().equals(updateRequest.getGenero())) {
-            if (!updateRequest.getGenero().equals("M") && !updateRequest.getGenero().equals("F")
-                    && !updateRequest.getGenero().equals("O")) throw new IllegalArgumentException("Gênero informado não suportado.");
-            userInfo.setGenero(updateRequest.getGenero().charAt(0));
-            usuario.setGenero(updateRequest.getGenero());
-            isUpdateValid = true;
+        if (request.getGenero() != null && !usuarioToUpdate.getGenero().equals(request.getGenero().charAt(0))) {
+            if (!supportedGendersSet.contains(request.getGenero())) throw new IllegalArgumentException("Gênero informado não suportado.");
+            usuarioToUpdate.setGenero(request.getGenero().charAt(0));
+            hasChanges = true;
         }
 
-        if (updateRequest.getTelefone() != null && !usuario.getTelefone().equals(updateRequest.getTelefone())) {
-            userInfo.setTelefone(updateRequest.getTelefone());
-            usuario.setTelefone(updateRequest.getTelefone());
-            isUpdateValid = true;
+        if (request.getTelefone() != null && !request.getTelefone().equals(usuarioToUpdate.getTelefone())) {
+            usuarioToUpdate.setTelefone(request.getTelefone());
+            hasChanges = true;
         }
 
-        if (updateRequest.getIdPapel() != null && !usuario.getIdPapel().equals(updateRequest.getIdPapel())) {
+        if (request.getIdPapel() != null && !usuarioToUpdate.getIdPapel().equals(request.getIdPapel().byteValue())) {
             var papelList = papelService.getPapeisUsuarios();
-            if (papelList.stream().noneMatch(papel -> papel.getId().equals(updateRequest.getIdPapel().byteValue())))
+            if (papelList.stream().noneMatch(papel -> papel.getId().equals(request.getIdPapel().byteValue()))) {
                 throw new IllegalArgumentException("Papel informado inválido.");
-            userInfo.setIdPapel(updateRequest.getIdPapel().byteValue());
-            usuario.setIdPapel(updateRequest.getIdPapel());
-            isUpdateValid = true;
+            }
+            usuarioToUpdate.setIdPapel(request.getIdPapel().byteValue());
+            hasChanges = true;
         }
 
-        return isUpdateValid;
+        return hasChanges;
     }
 
     private boolean isUpdateLoginValid(UpdateUsuarioRequest updateRequest, UsuarioResponse usuario) {

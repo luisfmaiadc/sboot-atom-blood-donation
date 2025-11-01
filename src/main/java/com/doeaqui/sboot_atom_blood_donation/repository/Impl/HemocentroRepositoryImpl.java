@@ -32,4 +32,8 @@ public interface HemocentroRepositoryImpl extends HemocentroRepository {
     @SqlQuery
     @RegisterBeanMapper(Hemocentro.class)
     List<Hemocentro> getHemocentroByFilter(@Bind("nome") String nome, @Bind("telefone") String telefone, @Bind("email") String email);
+
+    @Override
+    @SqlUpdate
+    void patchHemocentroInfo(@BindBean Hemocentro hemocentro);
 }

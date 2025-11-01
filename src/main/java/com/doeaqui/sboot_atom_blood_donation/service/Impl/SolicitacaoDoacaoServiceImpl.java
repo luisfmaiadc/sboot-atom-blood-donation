@@ -68,7 +68,7 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
             throw new IllegalArgumentException("Não é possível atualizar uma solicitação após seu cancelamento ou encerramento.");
 
         boolean solicitacaoDoacaoFieldsChanged = applySolicitacaoDoacaoUpdates(updateSolicitacaoRequest, solicitacaoDoacao);
-        if (!solicitacaoDoacaoFieldsChanged) throw new IllegalArgumentException("Informe ao menos um campo para atualizar ou os valores informados são os mesmos dos atuais.");
+        if (!solicitacaoDoacaoFieldsChanged) throw new IllegalArgumentException("Informe ao menos um campo para atualizar.");
 
         repository.patchSolicitacaoDoacaoInfo(solicitacaoDoacao);
         return getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);

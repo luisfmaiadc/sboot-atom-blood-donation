@@ -10,4 +10,5 @@ public interface HemocentroRepository {
     int postNewHemocentro(Hemocentro newHemocentro);
     Optional<Hemocentro> getHemocentroInfoById(Integer idHemocentro);
     List<Hemocentro> getHemocentroByFilter(String nome, String telefone, String email);
+    void patchHemocentroInfo(Hemocentro hemocentro);
 }

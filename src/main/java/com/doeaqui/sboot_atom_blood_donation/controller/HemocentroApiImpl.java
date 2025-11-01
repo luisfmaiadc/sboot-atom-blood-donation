@@ -5,6 +5,7 @@ import com.doeaqui.sboot_atom_blood_donation.domain.Hemocentro;
 import com.doeaqui.sboot_atom_blood_donation.mapper.HemocentroMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.HemocentroResponse;
 import com.doeaqui.sboot_atom_blood_donation.model.NewHemocentroRequest;
+import com.doeaqui.sboot_atom_blood_donation.model.UpdateHemocentroRequest;
 import com.doeaqui.sboot_atom_blood_donation.service.HemocentroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,12 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
         List<Hemocentro> hemocentroList = service.getHemocentroByFilter(nome, telefone, email);
         List<HemocentroResponse> responseList = mapper.toHemocentroResponseList(hemocentroList);
         return ResponseEntity.ok(responseList);
+    }
+
+    @Override
+    public ResponseEntity<HemocentroResponse> patchHemocentroInfo(Integer idHemocentro, UpdateHemocentroRequest updateHemocentroRequest) {
+        Hemocentro hemocentro = service.patchHemocentroInfo(idHemocentro, updateHemocentroRequest);
+        HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
+        return ResponseEntity.ok(response);
     }
 }

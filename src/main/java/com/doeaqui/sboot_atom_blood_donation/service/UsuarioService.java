@@ -10,4 +10,5 @@ public interface UsuarioService {
     Usuario postNewUser(NewUsuarioRequest usuarioRequest);
     UsuarioResponse getUserInfoById(Integer id);
     UsuarioResponse patchUserInfo(Integer idUsuario, UpdateUsuarioRequest updateUsuarioRequest);
+    void deleteUser(Integer idUsuario);
 }

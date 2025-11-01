@@ -10,4 +10,5 @@ public interface UsuarioRepository {
     int postNewUser(Usuario usuario);
     Optional<UsuarioResponse> getUserInfoById(Integer id);
     void patchUserInfo(Usuario usuario);
+    void deleteUser(Integer idUsuario);
 }

@@ -73,6 +73,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return getUserInfoById(idUsuario);
     }
 
+    @Override
+    @Transactional
+    public void deleteUser(Integer idUsuario) {
+        UsuarioResponse usuario = getUserInfoById(idUsuario);
+        if (Objects.equals(usuario.getAtivo(), Boolean.FALSE)) throw new IllegalArgumentException("Usuário já desativado.");
+        usuarioRepository.deleteUser(idUsuario);
+    }
+
     private boolean applyUserUpdates(UpdateUsuarioRequest request, Usuario usuarioToUpdate) {
         boolean hasChanges = false;
         final Set<String> supportedGendersSet = Set.of("M", "F", "O");

@@ -40,4 +40,10 @@ public class UsuarioApiImpl implements UsuarioApiDelegate {
         UsuarioResponse response = usuarioService.patchUserInfo(idUsuario, updateUsuarioRequest);
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteUser(Integer idUsuario) {
+        usuarioService.deleteUser(idUsuario);
+        return ResponseEntity.noContent().build();
+    }
 }

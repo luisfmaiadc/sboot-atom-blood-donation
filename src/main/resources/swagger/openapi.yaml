@@ -121,6 +121,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    delete:
+      summary: Inativar o cadastro do usuário
+      operationId: deleteUser
+      tags:
+        - Usuario
+      parameters:
+        - name: idUsuario
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Usuário inativado com sucesso
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /login:
     post:
       summary: Obter token JWT de autenticação

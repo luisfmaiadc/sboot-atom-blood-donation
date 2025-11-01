@@ -31,4 +31,8 @@ public interface UsuarioRepositoryImpl extends UsuarioRepository {
     @Override
     @SqlUpdate
     void patchUserInfo(@BindBean Usuario usuario);
+
+    @Override
+    @SqlUpdate
+    void deleteUser(@Bind("id") Integer idUsuario);
 }

@@ -32,6 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public Usuario postNewUser(NewUsuarioRequest usuarioRequest) {
+        validadeGenders(usuarioRequest.getGenero());
         Usuario newUser = usuarioMapper.toUsuario(usuarioRequest);
         newUser.setAtivo(Boolean.TRUE);
         int generatedId = usuarioRepository.postNewUser(newUser);
@@ -81,12 +82,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteUser(idUsuario);
     }
 
+    private void validadeGenders(String gender) {
+        final Set<String> supportedGendersSet = Set.of("M", "F", "O");
+        if (!supportedGendersSet.contains(gender))
+            throw new IllegalArgumentException("Gênero informado não suportado.");
+    }
+
     private boolean applyUserUpdates(UpdateUsuarioRequest request, Usuario usuarioToUpdate) {
         boolean hasChanges = false;
-        final Set<String> supportedGendersSet = Set.of("M", "F", "O");
 
         if (request.getGenero() != null && !Objects.equals(usuarioToUpdate.getGenero(), request.getGenero().charAt(0))) {
-            if (!supportedGendersSet.contains(request.getGenero())) throw new IllegalArgumentException("Gênero informado não suportado.");
+            validadeGenders(request.getGenero());
             usuarioToUpdate.setGenero(request.getGenero().charAt(0));
             hasChanges = true;
         }

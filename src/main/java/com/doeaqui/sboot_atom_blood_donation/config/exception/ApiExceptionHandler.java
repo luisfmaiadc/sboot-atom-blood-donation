@@ -1,6 +1,7 @@
 package com.doeaqui.sboot_atom_blood_donation.config.exception;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import com.doeaqui.sboot_atom_blood_donation.model.StandardError;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
@@ -47,10 +48,12 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(httpStatus).body(err);
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class, MethodArgumentNotValidException.class})
+    @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class,
+            MethodArgumentNotValidException.class, UnableToExecuteStatementException.class})
     public ResponseEntity<StandardError> badRequestException(Exception e) {
         String errorMessage;
         if (e instanceof TypeMismatchException || e instanceof MethodArgumentNotValidException) errorMessage = "Dados informados na requisição não são suportados.";
+        else if (e instanceof UnableToExecuteStatementException) errorMessage = "Violação de integridade dos dados. Verifique se os dados informados já existem ou são válidos.";
         else errorMessage = e.getMessage();
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);

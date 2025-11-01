@@ -446,6 +446,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    delete:
+      summary: Inativar o cadastro de um hemocentro
+      operationId: deleteHemocentro
+      tags:
+        - Hemocentro
+      parameters:
+        - name: idHemocentro
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Hemocentro inativado com sucesso
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Hemocentro não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /solicitacaoDoacao:
     post:
       summary: Cadastrar nova solicitação de doação

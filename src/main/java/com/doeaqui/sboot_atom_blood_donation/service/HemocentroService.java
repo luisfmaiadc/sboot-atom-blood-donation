@@ -12,4 +12,5 @@ public interface HemocentroService {
     Hemocentro getHemocentroInfoById(Integer idHemocentro);
     List<Hemocentro> getHemocentroByFilter(String nome, String telefone, String email);
     Hemocentro patchHemocentroInfo(Integer idHemocentro, UpdateHemocentroRequest updateHemocentroRequest);
+    void deleteHemocentro(Integer idHemocentro);
 }

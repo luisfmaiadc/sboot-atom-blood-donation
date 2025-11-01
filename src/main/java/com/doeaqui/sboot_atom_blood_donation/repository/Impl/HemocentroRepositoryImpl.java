@@ -36,4 +36,8 @@ public interface HemocentroRepositoryImpl extends HemocentroRepository {
     @Override
     @SqlUpdate
     void patchHemocentroInfo(@BindBean Hemocentro hemocentro);
+
+    @Override
+    @SqlUpdate
+    void deleteHemocentro(@Bind("idHemocentro") Integer idHemocentro);
 }

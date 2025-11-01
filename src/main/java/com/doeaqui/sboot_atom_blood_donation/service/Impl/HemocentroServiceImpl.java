@@ -63,6 +63,14 @@ public class HemocentroServiceImpl implements HemocentroService {
         return getHemocentroInfoById(idHemocentro);
     }
 
+    @Override
+    @Transactional
+    public void deleteHemocentro(Integer idHemocentro) {
+        Hemocentro hemocentro = getHemocentroInfoById(idHemocentro);
+        if(Objects.equals(hemocentro.getAtivo(), Boolean.FALSE)) throw new IllegalArgumentException("Hemocentro já inativado.");
+        repository.deleteHemocentro(idHemocentro);
+    }
+
     private boolean applyHemocentroUpdates(Hemocentro hemocentro, UpdateHemocentroRequest updateHemocentroRequest) {
         boolean hasChanges = false;
 

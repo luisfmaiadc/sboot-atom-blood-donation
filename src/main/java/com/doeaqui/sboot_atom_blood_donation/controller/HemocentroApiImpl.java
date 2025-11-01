@@ -50,4 +50,10 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
         HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteHemocentro(Integer idHemocentro) {
+        service.deleteHemocentro(idHemocentro);
+        return ResponseEntity.noContent().build();
+    }
 }

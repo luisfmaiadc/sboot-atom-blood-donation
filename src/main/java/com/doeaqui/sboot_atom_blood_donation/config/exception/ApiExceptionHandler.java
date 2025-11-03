@@ -1,6 +1,7 @@
 package com.doeaqui.sboot_atom_blood_donation.config.exception;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import lombok.extern.slf4j.Slf4j;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import com.doeaqui.sboot_atom_blood_donation.model.StandardError;
 import org.springframework.beans.TypeMismatchException;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.OffsetDateTime;
 
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> genericException(Exception e) {
+        log.error(e.getMessage(), e);
         String errorMessage = e.getMessage() == null ? "Ocorreu um erro inesperado no servidor." : e.getMessage();
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);
@@ -26,6 +29,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(JWTVerificationException.class)
     public ResponseEntity<StandardError> jwtVerificationException(JWTVerificationException e) {
+        log.error(e.getMessage(), e);
         String errorMessage =  "Token JWT inválido ou expirado.";
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);
@@ -34,6 +38,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<StandardError> badCredentialsException(BadCredentialsException e) {
+        log.error(e.getMessage(), e);
         String errorMessage =  "Usuário inexistente ou senha incorreta.";
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);
@@ -42,6 +47,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFoundException(ResourceNotFoundException e) {
+        log.error(e.getMessage(), e);
         String errorMessage = e.getMessage();
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);
@@ -51,6 +57,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class,
             MethodArgumentNotValidException.class, UnableToExecuteStatementException.class})
     public ResponseEntity<StandardError> badRequestException(Exception e) {
+        log.error(e.getMessage(), e);
         String errorMessage;
         if (e instanceof TypeMismatchException || e instanceof MethodArgumentNotValidException) errorMessage = "Dados informados na requisição não são suportados.";
         else if (e instanceof UnableToExecuteStatementException) errorMessage = "Violação de integridade dos dados. Verifique se os dados informados já existem ou são válidos.";

@@ -670,6 +670,7 @@ components:
           type: string
           minLength: 1
           maxLength: 150
+          pattern: "^[a-zA-ZÀ-ú'\\s]+$"
         dataNascimento:
           type: string
           format: date
@@ -682,9 +683,12 @@ components:
           type: string
           minLength: 1
           maxLength: 1
+          pattern: '^[MFO]$'
         telefone:
           type: string
-          maxLength: 20
+          minLength: 1
+          maxLength: 11
+          pattern: '^[0-9]{10,11}$'
         idTipoSanguineo:
           type: integer
           format: int32
@@ -703,12 +707,15 @@ components:
         email:
           type: string
           format: email
+          minLength: 1
           maxLength: 100
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         senha:
           type: string
           format: password
           minLength: 8
           maxLength: 100
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$'
 
     UsuarioResponse:
       type: object
@@ -748,7 +755,9 @@ components:
         email:
           type: string
           format: email
+          minLength: 1
           maxLength: 100
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         senha:
           type: string
 
@@ -802,13 +811,18 @@ components:
           type: string
           minLength: 1
           maxLength: 150
+          pattern: "^[a-zA-ZÀ-ú'\\s]+$"
         telefone:
           type: string
+          minLength: 1
           maxLength: 20
+          pattern: '^[0-9]{10,11}$'
         email:
           type: string
           format: email
+          minLength: 1
           maxLength: 100
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
     HemocentroResponse:
       type: object
@@ -850,6 +864,8 @@ components:
           maximum: 8
         observacoes:
           type: string
+          maxLength: 2000
+          pattern: '^[^<>]*$'
 
     SolicitacaoDoacaoResponse:
       type: object
@@ -882,20 +898,24 @@ components:
       properties:
         genero:
           type: string
+          pattern: '^[MFO]$'
           minLength: 1
           maxLength: 1
         telefone:
           type: string
+          pattern: '^[0-9]{10,11}$'
           maxLength: 20
         email:
           type: string
           format: email
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
           minLength: 1
           maxLength: 100
         senha:
           type: string
           minLength: 8
           maxLength: 100
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$'
         idPapel:
           type: integer
           format: int32
@@ -909,6 +929,8 @@ components:
           maxLength: 20
         observacoes:
           type: string
+          maxLength: 2000
+          pattern: '^[^<>]*$'
 
     UpdateHemocentroRequest:
       type: object
@@ -917,11 +939,13 @@ components:
           type: string
           minLength: 1
           maxLength: 20
+          pattern: '^[0-9]{10,11}$'
         email:
           type: string
           format: email
           minLength: 1
           maxLength: 100
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         ativo:
           type: boolean
 

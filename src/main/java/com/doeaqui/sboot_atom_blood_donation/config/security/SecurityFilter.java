@@ -1,7 +1,6 @@
 package com.doeaqui.sboot_atom_blood_donation.config.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.doeaqui.sboot_atom_blood_donation.repository.LoginRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +20,8 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final LoginRepository repository;
     private final HandlerExceptionResolver handlerExceptionResolver;
+    private final AuthenticationService authenticationService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
 
             String subject = tokenService.getSubject(token);
-            UserDetails usuario = repository.findByEmail(subject);
+            UserDetails usuario = authenticationService.loadUserByUsername(subject);
 
             if (usuario != null) {
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());

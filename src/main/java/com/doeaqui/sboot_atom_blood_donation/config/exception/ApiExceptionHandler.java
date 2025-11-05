@@ -8,6 +8,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,10 +37,12 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(httpStatus).body(err);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<StandardError> badCredentialsException(BadCredentialsException e) {
+    @ExceptionHandler({BadCredentialsException.class, AuthorizationDeniedException.class})
+    public ResponseEntity<StandardError> unauthorizedException(Exception e) {
         log.error(e.getMessage(), e);
-        String errorMessage =  "Usuário inexistente ou senha incorreta.";
+        String errorMessage;
+        if (e instanceof BadCredentialsException) errorMessage = "Usuário inexistente ou senha incorreta.";
+        else errorMessage = "Acesso negado.";
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         StandardError err = standardErrorBuilder(httpStatus, errorMessage);
         return ResponseEntity.status(httpStatus).body(err);

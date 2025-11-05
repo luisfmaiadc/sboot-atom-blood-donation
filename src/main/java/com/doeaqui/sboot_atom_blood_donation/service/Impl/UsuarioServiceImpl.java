@@ -173,6 +173,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         if (request.getIdPapel() != null && !Objects.equals(usuario.getIdPapel(), request.getIdPapel())) {
+            validatePapel(request.getIdPapel());
             isUpdateLoginValid = true;
         }
 

@@ -1,6 +1,7 @@
 package com.doeaqui.sboot_atom_blood_donation.controller;
 
 import com.doeaqui.sboot_atom_blood_donation.api.LoginApiDelegate;
+import com.doeaqui.sboot_atom_blood_donation.config.security.CustomUserDetails;
 import com.doeaqui.sboot_atom_blood_donation.config.security.TokenService;
 import com.doeaqui.sboot_atom_blood_donation.domain.Login;
 import com.doeaqui.sboot_atom_blood_donation.mapper.LoginMapper;
@@ -27,7 +28,7 @@ public class LoginApiImpl implements LoginApiDelegate {
     public ResponseEntity<AuthenticationResponse> postLoginCredentials(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha());
         var authentication = authenticationManager.authenticate(authenticationToken);
-        AuthenticationResponse response = tokenService.getToken((Login) authentication.getPrincipal());
+        AuthenticationResponse response = tokenService.getToken((CustomUserDetails) authentication.getPrincipal());
         return ResponseEntity.ok(response);
     }
 

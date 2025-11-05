@@ -11,6 +11,7 @@ import com.doeaqui.sboot_atom_blood_donation.model.LoginResponse;
 import com.doeaqui.sboot_atom_blood_donation.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ public class LoginApiImpl implements LoginApiDelegate {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or authentication.principal.idUsuario == #idUsuario")
     public ResponseEntity<LoginResponse> getLoginInfoById(Integer idUsuario) {
         Login login = loginService.getLoginInfoById(idUsuario);
         LoginResponse response = mapper.toLoginResponse(login);

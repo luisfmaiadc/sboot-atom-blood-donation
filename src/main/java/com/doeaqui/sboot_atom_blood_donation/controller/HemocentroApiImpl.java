@@ -9,6 +9,7 @@ import com.doeaqui.sboot_atom_blood_donation.model.UpdateHemocentroRequest;
 import com.doeaqui.sboot_atom_blood_donation.service.HemocentroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     private final HemocentroMapper mapper;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HemocentroResponse> postNewHemocentro(NewHemocentroRequest newHemocentroRequest) {
         Hemocentro newHemocentro = service.postNewHemocentro(newHemocentroRequest);
         HemocentroResponse response = mapper.toHemocentroResponse(newHemocentro);
@@ -31,6 +33,7 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<HemocentroResponse> getHemocentroInfoById(Integer idHemocentro) {
         Hemocentro hemocentro = service.getHemocentroInfoById(idHemocentro);
         HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
@@ -38,6 +41,7 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<HemocentroResponse>> getHemocentroByFilter(String nome, String telefone, String email) {
         List<Hemocentro> hemocentroList = service.getHemocentroByFilter(nome, telefone, email);
         List<HemocentroResponse> responseList = mapper.toHemocentroResponseList(hemocentroList);
@@ -45,6 +49,7 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HemocentroResponse> patchHemocentroInfo(Integer idHemocentro, UpdateHemocentroRequest updateHemocentroRequest) {
         Hemocentro hemocentro = service.patchHemocentroInfo(idHemocentro, updateHemocentroRequest);
         HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
@@ -52,6 +57,7 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteHemocentro(Integer idHemocentro) {
         service.deleteHemocentro(idHemocentro);
         return ResponseEntity.noContent().build();

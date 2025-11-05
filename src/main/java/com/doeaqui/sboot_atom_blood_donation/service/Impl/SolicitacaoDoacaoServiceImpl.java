@@ -1,6 +1,7 @@
 package com.doeaqui.sboot_atom_blood_donation.service.Impl;
 
 import com.doeaqui.sboot_atom_blood_donation.config.exception.ResourceNotFoundException;
+import com.doeaqui.sboot_atom_blood_donation.config.security.CustomUserDetails;
 import com.doeaqui.sboot_atom_blood_donation.domain.SolicitacaoDoacao;
 import com.doeaqui.sboot_atom_blood_donation.domain.Status;
 import com.doeaqui.sboot_atom_blood_donation.mapper.SolicitacaoDoacaoMapper;
@@ -12,6 +13,8 @@ import com.doeaqui.sboot_atom_blood_donation.service.SolicitacaoDoacaoService;
 import com.doeaqui.sboot_atom_blood_donation.service.UsuarioService;
 import com.doeaqui.sboot_atom_blood_donation.util.AppUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,19 +32,34 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
 
     private final SolicitacaoRepository repository;
     private final SolicitacaoDoacaoMapper mapper;
-    private final UsuarioService service;
+    private final UsuarioService usuarioService;
 
     @Override
     @Transactional
     public SolicitacaoDoacao postNewSolicitacaoDoacao(NewSolicitacaoDoacaoRequest request) {
-        UsuarioResponse usuario = service.getUserInfoById(request.getIdUsuario());
+        CustomUserDetails userDetails = AppUtils.getUserDetails();
+        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin && !request.getIdUsuario().equals(userDetails.getIdUsuario())) {
+            throw new AuthorizationDeniedException("Usuário não tem permissão para criar uma solicitação para outro usuário.");
+        }
+
         isSolicitacaoDoacaoValid(request.getIdUsuario());
-        isTipoSanguineoValid(usuario, request.getIdTipoSanguineo());
         SolicitacaoDoacao newSolicitacaoDoacao = mapper.toSolicitacaoDoacao(request);
+
+        boolean isPacienteOuDoadorPaciente = userDetails.getAuthorities().stream()
+                .anyMatch(ga -> ga.getAuthority().equals("ROLE_PACIENTE") || ga.getAuthority().equals("ROLE_DOADOR_PACIENTE"));
+
+        if (isPacienteOuDoadorPaciente) {
+            UsuarioResponse usuario = usuarioService.getUserInfoById(request.getIdUsuario());
+            newSolicitacaoDoacao.setIdTipoSanguineo(usuario.getIdTipoSanguineo().byteValue());
+        }
+
         newSolicitacaoDoacao.setDataSolicitacao(LocalDateTime.now());
         newSolicitacaoDoacao.setStatus(Status.ABERTA);
         int idSolicitacaoDoacao = repository.postNewSolicitacaoDoacao(newSolicitacaoDoacao);
         newSolicitacaoDoacao.setId(idSolicitacaoDoacao);
+
         return newSolicitacaoDoacao;
     }
 
@@ -63,6 +81,12 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
     public SolicitacaoDoacao patchSolicitacaoDoacaoInfo(Integer idSolicitacaoDoacao, UpdateSolicitacaoDoacaoRequest updateSolicitacaoRequest) {
         AppUtils.requireAtLeastOneNonNull(Arrays.asList(updateSolicitacaoRequest.getStatus(), updateSolicitacaoRequest.getObservacoes()));
         SolicitacaoDoacao solicitacaoDoacao = getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
+        CustomUserDetails userDetails = AppUtils.getUserDetails();
+
+        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = solicitacaoDoacao.getIdUsuario().equals(userDetails.getIdUsuario());
+
+        if (!isAdmin && !isOwner) throw new AccessDeniedException("Acesso negado.");
 
         if (solicitacaoDoacao.getStatus().equals(Status.ENCERRADA) || solicitacaoDoacao.getStatus().equals(Status.CANCELADA))
             throw new IllegalArgumentException("Não é possível atualizar uma solicitação após seu cancelamento ou encerramento.");
@@ -107,11 +131,6 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
                 .filter(s -> s.name().equalsIgnoreCase(statusStr))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Status informado inválido: " + statusStr + "."));
-    }
-
-    private void isTipoSanguineoValid(UsuarioResponse usuario, Integer idTipoSanguineo) {
-        if (usuario.getIdTipoSanguineo() == null || idTipoSanguineo == null) throw new IllegalArgumentException("O tipo sanguíneo não pode ser nulo.");
-        if (!usuario.getIdTipoSanguineo().equals(idTipoSanguineo)) throw new IllegalArgumentException("O tipo sanguíneo informado não corresponde ao do usuário.");
     }
 
     private void isSolicitacaoDoacaoValid(Integer idUsuario) {

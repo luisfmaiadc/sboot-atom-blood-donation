@@ -28,7 +28,7 @@ public class HemocentroServiceImpl implements HemocentroService {
     @Transactional
     public Hemocentro postNewHemocentro(NewHemocentroRequest request) {
         Hemocentro newHemocentro = mapper.toHemocentro(request);
-        newHemocentro.setAtivo(Boolean.FALSE);
+        newHemocentro.setAtivo(Boolean.TRUE);
         int idNewHemocentro = repository.postNewHemocentro(newHemocentro);
         newHemocentro.setId(idNewHemocentro);
         return newHemocentro;

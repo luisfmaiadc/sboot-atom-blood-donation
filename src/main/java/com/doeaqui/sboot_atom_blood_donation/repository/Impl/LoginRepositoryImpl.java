@@ -32,7 +32,7 @@ public interface LoginRepositoryImpl extends LoginRepository {
 
     @Override
     @SqlUpdate
-    void patchLoginEmail(@BindBean Login login);
+    void patchLoginEmailOrPapel(@BindBean Login login);
 
     @Override
     @SqlUpdate

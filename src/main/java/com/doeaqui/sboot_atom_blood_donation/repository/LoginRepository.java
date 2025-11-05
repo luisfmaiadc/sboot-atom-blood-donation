@@ -9,6 +9,6 @@ public interface LoginRepository {
     void postNewLogin(Login login);
     Login findByEmail(String email);
     Optional<Login> getLoginInfoById(Integer idUsuario);
-    void patchLoginEmail(Login login);
+    void patchLoginEmailOrPapel(Login login);
     void patchLoginSenha(Login login);
 }

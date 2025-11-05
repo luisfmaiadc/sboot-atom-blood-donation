@@ -1,3 +1,4 @@
 UPDATE TbLogin
-SET email = :email
+SET email = :email,
+    idPapel = :idPapel
 WHERE idUsuario = :idUsuario;

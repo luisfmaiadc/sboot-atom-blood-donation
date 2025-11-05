@@ -32,14 +32,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public Usuario postNewUser(NewUsuarioRequest usuarioRequest) {
+    public UsuarioResponse postNewUser(NewUsuarioRequest usuarioRequest) {
         validateNewUserRequest(usuarioRequest);
         Usuario newUser = usuarioMapper.toUsuario(usuarioRequest);
         newUser.setAtivo(Boolean.TRUE);
         int generatedId = usuarioRepository.postNewUser(newUser);
         newUser.setId(generatedId);
         loginService.postNewLogin(usuarioRequest.getLogin(), generatedId);
-        return newUser;
+        return getUserInfoById(generatedId);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         validadeGenders(usuarioRequest.getGenero());
         validateCpf(usuarioRequest.getCpf());
         validateTipoSanguineo(usuarioRequest.getIdTipoSanguineo());
-        validatePapel(usuarioRequest.getIdPapel());
+        validatePapel(usuarioRequest.getLogin().getIdPapel());
     }
 
     private void validateTipoSanguineo(Integer idTipoSanguineo) {
@@ -158,23 +158,21 @@ public class UsuarioServiceImpl implements UsuarioService {
             hasChanges = true;
         }
 
-        if (request.getIdPapel() != null && !Objects.equals(usuarioToUpdate.getIdPapel(), request.getIdPapel().byteValue())) {
-            validatePapel(request.getIdPapel());
-            usuarioToUpdate.setIdPapel(request.getIdPapel().byteValue());
-            hasChanges = true;
-        }
-
         return hasChanges;
     }
 
-    private boolean isUpdateLoginValid(UpdateUsuarioRequest updateRequest, UsuarioResponse usuario) {
+    private boolean isUpdateLoginValid(UpdateUsuarioRequest request, UsuarioResponse usuario) {
         boolean isUpdateLoginValid = false;
 
-        if (updateRequest.getEmail() != null && !Objects.equals(updateRequest.getEmail(), usuario.getEmail())) {
+        if (request.getEmail() != null && !Objects.equals(request.getEmail(), usuario.getEmail())) {
             isUpdateLoginValid = true;
         }
 
-        if (updateRequest.getSenha() != null) {
+        if (request.getSenha() != null) {
+            isUpdateLoginValid = true;
+        }
+
+        if (request.getIdPapel() != null && !Objects.equals(usuario.getIdPapel(), request.getIdPapel())) {
             isUpdateLoginValid = true;
         }
 

@@ -41,20 +41,26 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public Login patchLoginInfo(Integer idUsuario, UpdateUsuarioRequest updateRequest) {
+    public void patchLoginInfo(Integer idUsuario, UpdateUsuarioRequest updateRequest) {
         Login login = getLoginInfoById(idUsuario);
+        boolean isUpdateLoginOrPapel = false;
 
-        if (updateRequest.getEmail() != null && !login.getEmail().equals(updateRequest.getEmail())) {
+        if (updateRequest.getEmail() != null) {
             login.setEmail(updateRequest.getEmail());
-            repository.patchLoginEmail(login);
+            isUpdateLoginOrPapel = true;
         }
+
+        if (updateRequest.getIdPapel() != null) {
+            login.setIdPapel(updateRequest.getIdPapel().byteValue());
+            isUpdateLoginOrPapel = true;
+        }
+
+        if (isUpdateLoginOrPapel) repository.patchLoginEmailOrPapel(login);
 
         if (updateRequest.getSenha() != null) {
             String newSenha = passwordEncoder.encode(updateRequest.getSenha());
             login.setSenha(newSenha);
             repository.patchLoginSenha(login);
         }
-
-        return login;
     }
 }

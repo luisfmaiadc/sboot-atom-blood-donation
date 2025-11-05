@@ -663,7 +663,6 @@ components:
         - cpf
         - genero
         - idTipoSanguineo
-        - idPapel
         - login
       properties:
         nome:
@@ -692,9 +691,6 @@ components:
         idTipoSanguineo:
           type: integer
           format: int32
-        idPapel:
-          type: integer
-          format: int32
         login:
           $ref: '#/components/schemas/NewLoginRequest'
 
@@ -703,6 +699,7 @@ components:
       required:
         - email
         - senha
+        - idPapel
       properties:
         email:
           type: string
@@ -716,6 +713,9 @@ components:
           minLength: 8
           maxLength: 100
           pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$'
+        idPapel:
+          type: integer
+          format: int32
 
     UsuarioResponse:
       type: object

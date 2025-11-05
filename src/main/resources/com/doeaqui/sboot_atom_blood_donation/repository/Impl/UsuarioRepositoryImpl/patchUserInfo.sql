@@ -1,5 +1,4 @@
 UPDATE TbUsuario
 SET genero = :genero,
-    telefone = :telefone,
-    idPapel = :idPapel
+    telefone = :telefone
 WHERE id = :id;

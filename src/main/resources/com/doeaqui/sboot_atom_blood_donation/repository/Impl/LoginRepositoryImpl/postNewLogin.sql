@@ -1,9 +1,11 @@
 INSERT INTO TbLogin (
     idUsuario,
     email,
-    senha
+    senha,
+    idPapel
 ) VALUES (
     :idUsuario,
     :email,
-    :senha
+    :senha,
+    :idPapel
 );

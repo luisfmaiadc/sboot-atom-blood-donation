@@ -23,8 +23,7 @@ public class UsuarioApiImpl implements UsuarioApiDelegate {
 
     @Override
     public ResponseEntity<UsuarioResponse> postNewUser(NewUsuarioRequest usuarioRequest) {
-        Usuario usuario = usuarioService.postNewUser(usuarioRequest);
-        UsuarioResponse response = mapper.toUsuarioResponse(usuario);
+        UsuarioResponse response  = usuarioService.postNewUser(usuarioRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(uri).body(response);
     }

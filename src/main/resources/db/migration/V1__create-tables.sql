@@ -22,11 +22,9 @@ CREATE TABLE TbUsuario (
     genero CHAR(1) NOT NULL,
     telefone VARCHAR(20) UNIQUE,
     idTipoSanguineo TINYINT UNSIGNED NOT NULL,
-    idPapel TINYINT UNSIGNED NOT NULL,
     ativo TINYINT(1) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (idTipoSanguineo) REFERENCES TbTipoSanguineo(id),
-    FOREIGN KEY (idPapel) REFERENCES TbPapel(id)
+    FOREIGN KEY (idTipoSanguineo) REFERENCES TbTipoSanguineo(id)
 );
 
 -- Tabela de logins de usuários
@@ -34,8 +32,10 @@ CREATE TABLE TbLogin (
     idUsuario INT,
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
+    idPapel TINYINT UNSIGNED NOT NULL,
     tentativasFalhas TINYINT UNSIGNED,
     PRIMARY KEY (idUsuario),
+    FOREIGN KEY (idPapel) REFERENCES TbPapel(id),
     FOREIGN KEY (idUsuario) REFERENCES TbUsuario(id) ON DELETE CASCADE
 );
 

@@ -5,7 +5,6 @@ INSERT INTO TbUsuario (
     genero,
     telefone,
     idTipoSanguineo,
-    idPapel,
     ativo
 ) VALUES (
     :nome,
@@ -14,6 +13,5 @@ INSERT INTO TbUsuario (
     :genero,
     :telefone,
     :idTipoSanguineo,
-    :idPapel,
     :ativo
 );

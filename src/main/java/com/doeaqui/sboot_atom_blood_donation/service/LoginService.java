@@ -8,5 +8,5 @@ public interface LoginService {
 
     void postNewLogin(NewLoginRequest loginRequest, Integer idUsuario);
     Login getLoginInfoById(Integer idUsuario);
-    Login patchLoginInfo(Integer idUsuario, UpdateUsuarioRequest updateUsuarioRequest);
+    void patchLoginInfo(Integer idUsuario, UpdateUsuarioRequest updateUsuarioRequest);
 }

@@ -20,6 +20,7 @@ public class Login implements UserDetails {
     private Integer idUsuario;
     private String email;
     private String senha;
+    private Byte idPapel;
     private Byte tentativasFalhas;
 
     @Override

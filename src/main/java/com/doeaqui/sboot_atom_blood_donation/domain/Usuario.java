@@ -20,6 +20,5 @@ public class Usuario {
     private Character genero;
     private String telefone;
     private Byte idTipoSanguineo;
-    private Byte idPapel;
     private Boolean ativo;
 }

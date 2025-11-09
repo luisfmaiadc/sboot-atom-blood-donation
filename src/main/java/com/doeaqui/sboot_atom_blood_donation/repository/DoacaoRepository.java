@@ -8,4 +8,5 @@ public interface DoacaoRepository {
 
     int postNewDoacao(Doacao doacao);
     Optional<Doacao> getUltimaDoacao(Integer idUsuario);
+    Optional<Doacao> getDoacaoInfoById(Integer idDoacao);
 }

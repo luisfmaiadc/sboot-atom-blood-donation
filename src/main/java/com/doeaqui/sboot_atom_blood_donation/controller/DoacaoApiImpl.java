@@ -29,4 +29,12 @@ public class DoacaoApiImpl implements DoacaoApiDelegate {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOADOR', 'DOADOR_PACIENTE')")
+    public ResponseEntity<DoacaoResponse> getDoacaoInfoById(Integer idDoacao) {
+        Doacao doacao = service.getDoacaoInfoById(idDoacao);
+        DoacaoResponse response = mapper.toDoacaoResponse(doacao);
+        return ResponseEntity.ok(response);
+    }
 }

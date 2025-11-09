@@ -7,4 +7,6 @@ import java.util.List;
 public interface TipoSanguineoService {
 
     List<TipoSanguineo> getTiposSanguineos();
+    String getTipoSanguineoById(Byte idTipoSanguineo);
+    void validateBloodCompatible(Byte idReceptor, Byte idDoador);
 }

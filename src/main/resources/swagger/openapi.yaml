@@ -685,6 +685,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+  /doacao/{idDoacao}:
+    get:
+      summary: Obter informações de uma doação por ID
+      operationId: getDoacaoInfoById
+      tags:
+        - Doação
+      parameters:
+        - name: idDoacao
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Informações de uma doação obtidas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoacaoResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Doação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
 components:
   schemas:
     NewUsuarioRequest:
@@ -989,6 +1027,9 @@ components:
         idHemocentro:
           type: integer
           format: int32
+        idSolicitacaoDoacao:
+          type: integer
+          format: int32
         volume:
           type: integer
           format: int32
@@ -1004,6 +1045,9 @@ components:
           type: integer
           format: int32
         idUsuario:
+          type: integer
+          format: int32
+        idSolicitacaoDoacao:
           type: integer
           format: int32
         idHemocentro:

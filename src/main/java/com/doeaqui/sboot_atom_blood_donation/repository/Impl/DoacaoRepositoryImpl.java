@@ -28,4 +28,9 @@ public interface DoacaoRepositoryImpl extends DoacaoRepository {
     @SqlQuery
     @RegisterBeanMapper(Doacao.class)
     Optional<Doacao> getUltimaDoacao(@Bind("idUsuario") Integer idUsuario);
+
+    @Override
+    @SqlQuery
+    @RegisterBeanMapper(Doacao.class)
+    Optional<Doacao> getDoacaoInfoById(@Bind("idDoacao") Integer idDoacao);
 }

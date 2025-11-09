@@ -51,4 +51,9 @@ public class ApiConfig {
     public SolicitacaoDoacaoRepositoryImpl solicitacaoDoacaoRepository(Jdbi jdbi) {
         return jdbi.onDemand(SolicitacaoDoacaoRepositoryImpl.class);
     }
+
+    @Bean
+    public DoacaoRepositoryImpl doacaoRepository(Jdbi jdbi) {
+        return jdbi.onDemand(DoacaoRepositoryImpl.class);
+    }
 }

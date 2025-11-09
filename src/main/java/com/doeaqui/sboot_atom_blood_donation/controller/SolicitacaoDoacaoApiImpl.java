@@ -34,7 +34,6 @@ public class SolicitacaoDoacaoApiImpl implements SolicitacaoDoacaoApiDelegate {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SolicitacaoDoacaoResponse>> getSolicitacaoDoacaoByFilter(Integer idUsuario, Integer idHemocentro, Integer idTipoSanguineo, LocalDate dataSolicitacao, String status, LocalDate dataEncerramento) {
         List<SolicitacaoDoacao> solicitacaoDoacaoList = service.getSolicitacaoDoacaoByFilter(idUsuario, idHemocentro, idTipoSanguineo, dataSolicitacao, status, dataEncerramento);
         List<SolicitacaoDoacaoResponse> responseList = mapper.toSolicitacaoDoacaoResponseList(solicitacaoDoacaoList);
@@ -42,7 +41,6 @@ public class SolicitacaoDoacaoApiImpl implements SolicitacaoDoacaoApiDelegate {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SolicitacaoDoacaoResponse> getSolicitacaoDoacaoInfoById(Integer idSolicitacaoDoacao) {
         SolicitacaoDoacao solicitacaoDoacao = service.getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
         SolicitacaoDoacaoResponse response = mapper.toSolicitacaoDoacaoResponse(solicitacaoDoacao);

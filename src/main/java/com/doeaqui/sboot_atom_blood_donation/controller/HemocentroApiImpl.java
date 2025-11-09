@@ -33,7 +33,6 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<HemocentroResponse> getHemocentroInfoById(Integer idHemocentro) {
         Hemocentro hemocentro = service.getHemocentroInfoById(idHemocentro);
         HemocentroResponse response = mapper.toHemocentroResponse(hemocentro);
@@ -41,7 +40,6 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<HemocentroResponse>> getHemocentroByFilter(String nome, String telefone, String email) {
         List<Hemocentro> hemocentroList = service.getHemocentroByFilter(nome, telefone, email);
         List<HemocentroResponse> responseList = mapper.toHemocentroResponseList(hemocentroList);

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sboot-atom-blood-donation
+    name: sboot-doe-aqui-monolith
 
   datasource:
     url: jdbc:mysql://localhost:3306/dbDoeAqui?createDatabaseIfNotExist=true

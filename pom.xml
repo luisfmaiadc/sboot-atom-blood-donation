@@ -10,9 +10,9 @@
     </parent>
 
 	<groupId>com.doeaqui</groupId>
-	<artifactId>sboot-atom-blood-donation</artifactId>
+	<artifactId>sboot-doe-aqui-monolith</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sboot-atom-blood-donation</name>
+	<name>sboot-doe-aqui-monolith</name>
     <description>Projeto DoeAqui com Spring Boot e OpenAPI</description>
 
 	<properties>
@@ -147,8 +147,8 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/swagger/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>com.doeaqui.sboot_atom_blood_donation.api</apiPackage>
-                            <modelPackage>com.doeaqui.sboot_atom_blood_donation.model</modelPackage>
+                            <apiPackage>com.doeaqui.sboot_doe_aqui_monolith.api</apiPackage>
+                            <modelPackage>com.doeaqui.sboot_doe_aqui_monolith.model</modelPackage>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             <configOptions>
                                 <delegatePattern>true</delegatePattern>

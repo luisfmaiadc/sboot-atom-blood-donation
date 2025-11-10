@@ -38,7 +38,7 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
     @Transactional
     public SolicitacaoDoacao postNewSolicitacaoDoacao(NewSolicitacaoDoacaoRequest request) {
         CustomUserDetails userDetails = AppUtils.getUserDetails();
-        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = AppUtils.isAdmin();
 
         if (!isAdmin && !request.getIdUsuario().equals(userDetails.getIdUsuario())) {
             throw new AuthorizationDeniedException("Usuário não tem permissão para criar uma solicitação para outro usuário.");
@@ -83,7 +83,7 @@ public class SolicitacaoDoacaoServiceImpl implements SolicitacaoDoacaoService {
         SolicitacaoDoacao solicitacaoDoacao = getSolicitacaoDoacaoInfoById(idSolicitacaoDoacao);
         CustomUserDetails userDetails = AppUtils.getUserDetails();
 
-        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = AppUtils.isAdmin();
         boolean isOwner = solicitacaoDoacao.getIdUsuario().equals(userDetails.getIdUsuario());
 
         if (!isAdmin && !isOwner) throw new AccessDeniedException("Acesso negado.");

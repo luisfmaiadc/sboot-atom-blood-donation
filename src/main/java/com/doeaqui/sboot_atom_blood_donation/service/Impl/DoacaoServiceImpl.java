@@ -15,7 +15,10 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,10 +52,19 @@ public class DoacaoServiceImpl implements DoacaoService {
         if (optionalDoacao.isEmpty()) throw new ResourceNotFoundException("Doação não encontrada.");
         CustomUserDetails userDetails = AppUtils.getUserDetails();
         Doacao doacao = optionalDoacao.get();
-        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = AppUtils.isAdmin();
         boolean isOwner = doacao.getIdUsuario().equals(userDetails.getIdUsuario());
         if (!isOwner && !isAdmin) throw new AuthorizationDeniedException("Acesso negado.");
         return doacao;
+    }
+
+    @Override
+    public List<Doacao> getDoacaoByFilter(Integer idUsuario, Integer idHemocentro, LocalDate dataDoacao, Integer volume) {
+        AppUtils.requireAtLeastOneNonNull(Arrays.asList(idUsuario, idHemocentro, dataDoacao, volume));
+        CustomUserDetails userDetails = AppUtils.getUserDetails();
+        boolean isAdmin = AppUtils.isAdmin();
+        if (!isAdmin && idUsuario != null) throw new AuthorizationDeniedException("Apenas um administrador pode visualizar doações de outro usuário.");
+        return repository.getDoacaoByFilter(idHemocentro, dataDoacao, volume, isAdmin ? idUsuario : userDetails.getIdUsuario());
     }
 
     private void isNewDoacaoValid(Doacao doacao, UsuarioResponse usuario) {

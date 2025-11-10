@@ -19,4 +19,9 @@ public class AppUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (CustomUserDetails) authentication.getPrincipal();
     }
+
+    public static boolean isAdmin() {
+        CustomUserDetails userDetails = getUserDetails();
+        return userDetails.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ROLE_ADMIN"));
+    }
 }

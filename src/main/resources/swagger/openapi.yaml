@@ -685,6 +685,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/StandardError'
 
+    get:
+      summary: Obter informações de doação por filtros
+      operationId: getDoacaoByFilter
+      tags:
+        - Doação
+      parameters:
+        - in: query
+          name: idUsuario
+          schema:
+            type: integer
+            format: int32
+          required: false
+        - in: query
+          name: idHemocentro
+          schema:
+            type: integer
+            format: int32
+          required: false
+        - in: query
+          name: dataDoacao
+          schema:
+            type: string
+            format: date
+          required: false
+        - in: query
+          name: volume
+          schema:
+            type: integer
+            format: int32
+          required: false
+      responses:
+        '200':
+          description: Doação encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoacaoResponse'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+
   /doacao/{idDoacao}:
     get:
       summary: Obter informações de uma doação por ID

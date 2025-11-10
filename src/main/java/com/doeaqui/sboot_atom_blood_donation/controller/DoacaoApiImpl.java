@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +37,14 @@ public class DoacaoApiImpl implements DoacaoApiDelegate {
     public ResponseEntity<DoacaoResponse> getDoacaoInfoById(Integer idDoacao) {
         Doacao doacao = service.getDoacaoInfoById(idDoacao);
         DoacaoResponse response = mapper.toDoacaoResponse(doacao);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOADOR', 'DOADOR_PACIENTE')")
+    public ResponseEntity<List<DoacaoResponse>> getDoacaoByFilter(Integer idUsuario, Integer idHemocentro, LocalDate dataDoacao, Integer volume) {
+        List<Doacao> doacoes = service.getDoacaoByFilter(idUsuario, idHemocentro, dataDoacao, volume);
+        List<DoacaoResponse> response = mapper.toDoacaoResponseList(doacoes);
         return ResponseEntity.ok(response);
     }
 }

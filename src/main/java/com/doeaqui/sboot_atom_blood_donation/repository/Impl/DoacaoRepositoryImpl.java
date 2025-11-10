@@ -12,6 +12,8 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,4 +35,10 @@ public interface DoacaoRepositoryImpl extends DoacaoRepository {
     @SqlQuery
     @RegisterBeanMapper(Doacao.class)
     Optional<Doacao> getDoacaoInfoById(@Bind("idDoacao") Integer idDoacao);
+
+    @Override
+    @SqlQuery
+    @RegisterBeanMapper(Doacao.class)
+    List<Doacao> getDoacaoByFilter(@Bind("idHemocentro") Integer idHemocentro, @Bind("dataDoacao") LocalDate dataDoacao,
+                                   @Bind("volume") Integer volume, @Bind("idUsuario") Integer idUsuario);
 }

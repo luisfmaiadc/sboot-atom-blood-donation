@@ -12,4 +12,5 @@ public interface DoacaoRepository {
     Optional<Doacao> getUltimaDoacao(Integer idUsuario);
     Optional<Doacao> getDoacaoInfoById(Integer idDoacao);
     List<Doacao> getDoacaoByFilter(Integer idHemocentro, LocalDate dataDoacao, Integer volume, Integer idUsuario);
+    void patchDoacaoInfo(Doacao doacao);
 }

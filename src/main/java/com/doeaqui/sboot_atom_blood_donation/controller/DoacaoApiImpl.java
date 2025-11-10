@@ -5,6 +5,7 @@ import com.doeaqui.sboot_atom_blood_donation.domain.Doacao;
 import com.doeaqui.sboot_atom_blood_donation.mapper.DoacaoMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.DoacaoResponse;
 import com.doeaqui.sboot_atom_blood_donation.model.NewDoacaoRequest;
+import com.doeaqui.sboot_atom_blood_donation.model.UpdateDoacaoRequest;
 import com.doeaqui.sboot_atom_blood_donation.service.DoacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,14 @@ public class DoacaoApiImpl implements DoacaoApiDelegate {
     public ResponseEntity<List<DoacaoResponse>> getDoacaoByFilter(Integer idUsuario, Integer idHemocentro, LocalDate dataDoacao, Integer volume) {
         List<Doacao> doacoes = service.getDoacaoByFilter(idUsuario, idHemocentro, dataDoacao, volume);
         List<DoacaoResponse> response = mapper.toDoacaoResponseList(doacoes);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOADOR', 'DOADOR_PACIENTE')")
+    public ResponseEntity<DoacaoResponse> patchDoacaoInfo(Integer idDoacao, UpdateDoacaoRequest updateDoacaoRequest) {
+        Doacao updatedDoacao = service.patchDoacaoInfo(idDoacao, updateDoacaoRequest);
+        DoacaoResponse response = mapper.toDoacaoResponse(updatedDoacao);
         return ResponseEntity.ok(response);
     }
 }

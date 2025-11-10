@@ -41,4 +41,8 @@ public interface DoacaoRepositoryImpl extends DoacaoRepository {
     @RegisterBeanMapper(Doacao.class)
     List<Doacao> getDoacaoByFilter(@Bind("idHemocentro") Integer idHemocentro, @Bind("dataDoacao") LocalDate dataDoacao,
                                    @Bind("volume") Integer volume, @Bind("idUsuario") Integer idUsuario);
+
+    @Override
+    @SqlUpdate
+    void patchDoacaoInfo(@BindBean Doacao doacao);
 }

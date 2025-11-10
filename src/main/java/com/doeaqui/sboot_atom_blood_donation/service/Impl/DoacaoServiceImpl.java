@@ -6,6 +6,7 @@ import com.doeaqui.sboot_atom_blood_donation.domain.Doacao;
 import com.doeaqui.sboot_atom_blood_donation.domain.SolicitacaoDoacao;
 import com.doeaqui.sboot_atom_blood_donation.mapper.DoacaoMapper;
 import com.doeaqui.sboot_atom_blood_donation.model.NewDoacaoRequest;
+import com.doeaqui.sboot_atom_blood_donation.model.UpdateDoacaoRequest;
 import com.doeaqui.sboot_atom_blood_donation.model.UsuarioResponse;
 import com.doeaqui.sboot_atom_blood_donation.repository.DoacaoRepository;
 import com.doeaqui.sboot_atom_blood_donation.service.*;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +67,20 @@ public class DoacaoServiceImpl implements DoacaoService {
         boolean isAdmin = AppUtils.isAdmin();
         if (!isAdmin && idUsuario != null) throw new AuthorizationDeniedException("Apenas um administrador pode visualizar doações de outro usuário.");
         return repository.getDoacaoByFilter(idHemocentro, dataDoacao, volume, isAdmin ? idUsuario : userDetails.getIdUsuario());
+    }
+
+    @Override
+    @Transactional
+    public Doacao patchDoacaoInfo(Integer idDoacao, UpdateDoacaoRequest updateDoacaoRequest) {
+        AppUtils.requireAtLeastOneNonNull(Collections.singletonList(updateDoacaoRequest.getObservacoes()));
+        Doacao doacao = getDoacaoInfoById(idDoacao);
+        CustomUserDetails userDetails = AppUtils.getUserDetails();
+        boolean isAdmin = AppUtils.isAdmin();
+        boolean isOwner = doacao.getIdUsuario().equals(userDetails.getIdUsuario());
+        if (!isOwner && !isAdmin) throw new AuthorizationDeniedException("Apenas um administrador pode alterar uma doação de outro usuário.");
+        doacao.setObservacoes(updateDoacaoRequest.getObservacoes());
+        repository.patchDoacaoInfo(doacao);
+        return getDoacaoInfoById(idDoacao);
     }
 
     private void isNewDoacaoValid(Doacao doacao, UsuarioResponse usuario) {

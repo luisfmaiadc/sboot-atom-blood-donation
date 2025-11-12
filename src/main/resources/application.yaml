@@ -7,6 +7,10 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:secret}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/dbDoeAquiGeo
 
 api:
   security:

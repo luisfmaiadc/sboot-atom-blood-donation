@@ -16,4 +16,5 @@ public class Hemocentro {
     private String telefone;
     private String email;
     private Boolean ativo;
+    private EnderecoHemocentro endereco;
 }

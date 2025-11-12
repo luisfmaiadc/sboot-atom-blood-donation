@@ -971,6 +971,7 @@ components:
         - nome
         - telefone
         - email
+        - endereco
       properties:
         nome:
           type: string
@@ -988,6 +989,8 @@ components:
           minLength: 1
           maxLength: 100
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        endereco:
+          $ref: '#/components/schemas/NewEnderecoRequest'
 
     HemocentroResponse:
       type: object
@@ -1008,6 +1011,8 @@ components:
           maxLength: 100
         ativo:
           type: boolean
+        endereco:
+          $ref: '#/components/schemas/Endereco'
 
     NewSolicitacaoDoacaoRequest:
       type: object
@@ -1164,6 +1169,94 @@ components:
       properties:
         observacoes:
           type: string
+
+    NewEnderecoRequest:
+      type: object
+      required:
+        - rua
+        - bairro
+        - numero
+        - cep
+        - cidade
+        - estado
+        - pais
+        - coordenadas
+      properties:
+        rua:
+          type: string
+          minLength: 1
+          maxLength: 255
+        bairro:
+          type: string
+          minLength: 1
+          maxLength: 100
+        numero:
+          type: string
+          minLength: 1
+          maxLength: 10
+        complemento:
+          type: string
+          minLength: 1
+          maxLength: 20
+        cep:
+          type: string
+          pattern: '^[0-9]{8}$'
+          minLength: 8
+          maxLength: 8
+        cidade:
+          type: string
+          minLength: 1
+          maxLength: 100
+        estado:
+          type: string
+          pattern: '^[a-zA-Z]{2}$'
+          minLength: 2
+          maxLength: 2
+        pais:
+          type: string
+          minLength: 1
+          maxLength: 100
+        coordenadas:
+          type: object
+          required:
+            - longitude
+            - latitude
+          properties:
+            longitude:
+              type: number
+              format: double
+            latitude:
+              type: number
+              format: double
+
+    Endereco:
+      type: object
+      properties:
+        rua:
+          type: string
+        bairro:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        cep:
+          type: string
+        cidade:
+          type: string
+        estado:
+          type: string
+        pais:
+          type: string
+        coordenadas:
+          type: object
+          properties:
+            longitude:
+              type: number
+              format: double
+            latitude:
+              type: number
+              format: double
 
     StandardError:
       type: object

@@ -37,7 +37,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario newUser = usuarioMapper.toUsuario(usuarioRequest);
         newUser.setAtivo(Boolean.TRUE);
         int generatedId = usuarioRepository.postNewUser(newUser);
-        newUser.setId(generatedId);
         loginService.postNewLogin(usuarioRequest.getLogin(), generatedId);
         return getUserInfoById(generatedId);
     }

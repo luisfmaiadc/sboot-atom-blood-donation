@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = EnderecoMapper.class)
 public interface HemocentroMapper {
 
     Hemocentro toHemocentro(NewHemocentroRequest request);

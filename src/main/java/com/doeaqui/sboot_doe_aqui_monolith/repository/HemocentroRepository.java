@@ -4,6 +4,7 @@ import com.doeaqui.sboot_doe_aqui_monolith.domain.Hemocentro;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface HemocentroRepository {
 
@@ -12,4 +13,5 @@ public interface HemocentroRepository {
     List<Hemocentro> getHemocentroByFilter(String nome, String telefone, String email);
     void patchHemocentroInfo(Hemocentro hemocentro);
     void deleteHemocentro(Integer idHemocentro);
+    Set<Integer> getHemocentroIfHasSolicitacaoDoacao(List<Integer> hemocentroIdList, List<Byte> tipoSanguineoIdList);
 }

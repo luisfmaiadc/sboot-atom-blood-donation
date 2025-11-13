@@ -9,4 +9,5 @@ public interface TipoSanguineoService {
     List<TipoSanguineo> getTiposSanguineos();
     String getTipoSanguineoById(Byte idTipoSanguineo);
     void validateBloodCompatible(Byte idReceptor, Byte idDoador);
+    List<Byte> getTipoSanguineoCompativel(Byte idTipoSanguineo);
 }

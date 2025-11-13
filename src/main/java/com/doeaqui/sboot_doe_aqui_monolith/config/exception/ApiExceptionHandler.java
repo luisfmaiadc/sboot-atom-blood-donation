@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -58,7 +59,8 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler({IllegalArgumentException.class, TypeMismatchException.class,
-            MethodArgumentNotValidException.class, UnableToExecuteStatementException.class})
+            MethodArgumentNotValidException.class, UnableToExecuteStatementException.class,
+            MissingServletRequestParameterException.class})
     public ResponseEntity<StandardError> badRequestException(Exception e) {
         log.error(e.getMessage(), e);
         String errorMessage;

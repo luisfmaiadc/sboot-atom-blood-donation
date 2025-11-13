@@ -60,4 +60,12 @@ public class HemocentroApiImpl implements HemocentroApiDelegate {
         service.deleteHemocentro(idHemocentro);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOADOR', 'DOADOR_PACIENTE')")
+    public ResponseEntity<List<HemocentroResponse>> getHemocentroByLocation(Double latitude, Double longitude, Integer raio) {
+        List<Hemocentro> hemocentroList = service.getHemocentroByLocation(latitude, longitude, raio);
+        List<HemocentroResponse> responseList = mapper.toHemocentroResponseList(hemocentroList);
+        return ResponseEntity.ok(responseList);
+    }
 }

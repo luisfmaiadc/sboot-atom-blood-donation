@@ -5,6 +5,7 @@ import com.doeaqui.sboot_doe_aqui_monolith.repository.HemocentroRepository;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.customizer.BindList;
 import org.jdbi.v3.sqlobject.locator.UseClasspathSqlLocator;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @UseClasspathSqlLocator
@@ -40,4 +42,8 @@ public interface HemocentroRepositoryImpl extends HemocentroRepository {
     @Override
     @SqlUpdate
     void deleteHemocentro(@Bind("idHemocentro") Integer idHemocentro);
+
+    @Override
+    @SqlQuery
+    Set<Integer> getHemocentroIfHasSolicitacaoDoacao(@BindList("hemocentroIdList") List<Integer> hemocentroIdList, @BindList("tipoSanguineoIdList") List<Byte> tipoSanguineoIdList);
 }

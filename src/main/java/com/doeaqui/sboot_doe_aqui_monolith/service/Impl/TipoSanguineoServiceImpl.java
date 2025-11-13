@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -17,16 +15,38 @@ public class TipoSanguineoServiceImpl implements TipoSanguineoService {
 
     private final TipoSanguineoRepository repository;
 
-    private static final Map<String, Set<String>> COMPATIBILIDADE_SANGUINEA = Map.of(
-            "A+", Set.of("A+", "A-", "O+", "O-"),
-            "A-", Set.of("A-", "O-"),
-            "B+", Set.of("B+", "B-", "O+", "O-"),
-            "B-", Set.of("B-", "O-"),
-            "AB+", Set.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"),
-            "AB-", Set.of("A-", "B-", "AB-", "O-"),
-            "O+", Set.of("O+", "O-"),
-            "O-", Set.of("O-")
+    private static final Map<String, List<String>> COMPATIBILIDADE_DOADOR = Map.of(
+            "A+", List.of("A+", "AB+"),
+            "A-", List.of("A+", "A-", "AB+", "AB-"),
+            "B+", List.of("B+", "AB+"),
+            "B-", List.of("B+", "B-", "AB+", "AB-"),
+            "AB+", List.of("AB+"),
+            "AB-", List.of("AB+", "AB-"),
+            "O+", List.of("A+", "B+", "O+", "AB+"),
+            "O-", List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
     );
+
+    private static Map<String, Byte> tipoSanguineoStringToIdMap;
+    private static Map<Byte, List<Byte>> compatibilidadePorId;
+
+    private void initializeCompatibilityMaps() {
+        if (tipoSanguineoStringToIdMap == null) {
+            synchronized (TipoSanguineoServiceImpl.class) {
+                if (tipoSanguineoStringToIdMap == null) {
+                    List<TipoSanguineo> tiposSanguineos = getTiposSanguineos();
+                    tipoSanguineoStringToIdMap = new HashMap<>();
+                    tiposSanguineos.forEach(ts -> tipoSanguineoStringToIdMap.put(ts.getTipo() + ts.getFator(), ts.getId()));
+
+                    compatibilidadePorId = new HashMap<>();
+                    COMPATIBILIDADE_DOADOR.forEach((doador, receptores) -> {
+                        Byte doadorId = tipoSanguineoStringToIdMap.get(doador);
+                        List<Byte> receptoresIds = receptores.stream().map(tipoSanguineoStringToIdMap::get).toList();
+                        compatibilidadePorId.put(doadorId, receptoresIds);
+                    });
+                }
+            }
+        }
+    }
 
     @Override
     @Cacheable("tiposSanguineos")
@@ -46,14 +66,15 @@ public class TipoSanguineoServiceImpl implements TipoSanguineoService {
 
     @Override
     public void validateBloodCompatible(Byte idReceptor, Byte idDoador) {
-        String tipoReceptor = getTipoSanguineoById(idReceptor);
-        String tipoDoador = getTipoSanguineoById(idDoador);
+        List<Byte> receptoresCompativeis = getTipoSanguineoCompativel(idDoador);
+        if (!receptoresCompativeis.contains(idReceptor)) {
+            throw new IllegalArgumentException("Tipo sanguíneo incompatível.");
+        }
+    }
 
-        Set<String> doadoresCompativeis = COMPATIBILIDADE_SANGUINEA.get(tipoReceptor);
-
-        if (doadoresCompativeis == null || !doadoresCompativeis.contains(tipoDoador))
-            throw new IllegalArgumentException(
-                    String.format("Tipo sanguíneo incompatível. Receptor %s não pode receber de %s.", tipoReceptor, tipoDoador)
-            );
+    @Override
+    public List<Byte> getTipoSanguineoCompativel(Byte idTipoSanguineo) {
+        initializeCompatibilityMaps();
+        return compatibilidadePorId.getOrDefault(idTipoSanguineo, Collections.emptyList());
     }
 }

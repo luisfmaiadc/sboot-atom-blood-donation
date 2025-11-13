@@ -11,6 +11,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/dbDoeAquiGeo
+      auto-index-creation: true
 
 api:
   security:
